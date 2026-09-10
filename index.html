@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#f4f1e9"/>
+<title>Experiment Journal</title>
+<style>
+:root{
+  --bg:#f4f1e9; --panel:#faf8f3; --ink:#20231f; --muted:#77796f;
+  --line:#d8d4c9; --accent:#30483b; --soft:#e8e9df; --white:#fff;
+  --radius:20px; --shadow:0 12px 35px rgba(30,35,30,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Pretendard,"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.02em}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh}
+.topbar{position:sticky;top:0;z-index:50;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:rgba(244,241,233,.92);backdrop-filter:blur(18px)}
+.brand{display:flex;gap:12px;align-items:center;font-weight:700}.brandmark{width:28px;height:28px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-size:12px}
+.ver{font-size:12px;color:var(--muted);font-weight:600}
+.actions{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:9px 12px;border-radius:999px;font-size:13px;font-weight:650}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr) 330px;max-width:1700px;margin:0 auto;min-height:calc(100vh - 64px)}
+.sidebar{border-right:1px solid var(--line);padding:24px 18px;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto}
+.side-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:10px 10px 14px}
+.exp-nav{display:flex;flex-direction:column;gap:8px}
+.exp-item{border:0;background:transparent;text-align:left;padding:13px 12px;border-radius:14px;color:var(--ink);display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+.exp-item:hover,.exp-item.active{background:#ebe8de}.exp-num{font-size:12px;color:var(--muted);padding-top:2px}.exp-title{font-size:14px;font-weight:700;line-height:1.35}.exp-kicker{font-size:11px;color:var(--muted);margin-top:4px}
+.new-exp{width:100%;margin-top:14px}
+.main{padding:34px clamp(22px,4vw,62px) 90px;min-width:0}
+.hero{padding:36px 0 42px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);font-weight:700}
+.hero h1{font-size:clamp(44px,6vw,92px);line-height:.95;letter-spacing:-.065em;margin:18px 0 20px;max-width:950px;font-weight:800}
+.hero-copy{max-width:760px;font-size:clamp(17px,2vw,22px);line-height:1.65;color:#4a4e47}
+.wave{margin-top:34px;height:50px;position:relative;overflow:hidden}
+.wave svg{width:100%;height:100%}.wave path{fill:none;stroke:var(--accent);stroke-width:1.5;opacity:.75}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:28px 0 46px;border-bottom:1px solid var(--line)}
+.t-step{padding-top:12px;border-top:2px solid var(--ink)}.t-step small{color:var(--muted);font-size:11px}.t-step b{display:block;margin:7px 0 4px;font-size:16px}.t-step span{font-size:13px;color:var(--muted)}
+.section{padding:46px 0;border-bottom:1px solid var(--line)}
+.section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:24px}.section-head h2{font-size:clamp(26px,3vw,40px);margin:0;letter-spacing:-.045em}.section-head p{margin:0;color:var(--muted);font-size:13px}
+.exp-card{background:var(--panel);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
+.cover{aspect-ratio:16/8.5;background:#ddd;overflow:hidden;position:relative}.cover img,.cover video{width:100%;height:100%;object-fit:cover;display:block}.cover .badge{position:absolute;left:16px;top:16px;background:rgba(250,248,243,.9);padding:8px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.exp-body{padding:26px}.exp-body h3{font-size:clamp(27px,4vw,48px);line-height:1.08;letter-spacing:-.05em;margin:8px 0 12px}.lead{font-size:18px;line-height:1.65;color:#494d45;max-width:760px}
+.story-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:24px}.story{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff}.story label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:700}.story p{font-size:14px;line-height:1.65;margin:0;white-space:pre-line}
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}.media{border-radius:16px;overflow:hidden;background:#e4e2db;min-height:180px;position:relative}.media img,.media video{width:100%;height:100%;display:block;object-fit:cover}.media.tall{grid-row:span 2}.media .caption{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(20,22,19,.72);color:#fff;border-radius:10px;padding:8px 10px;font-size:11px}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);align-items:center;gap:8px;margin-top:22px}.node{border:1px solid var(--line);background:#fff;padding:15px;border-radius:14px;text-align:center;font-size:12px;line-height:1.4}.arr{text-align:center;color:var(--muted)}
+.big-quote{font-size:clamp(28px,4.4vw,64px);line-height:1.08;letter-spacing:-.055em;max-width:980px;margin:14px 0 8px}
+.quote-sub{font-size:15px;color:var(--muted);line-height:1.6;max-width:700px}
+.inspector{border-left:1px solid var(--line);padding:24px 20px;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto;background:rgba(250,248,243,.45)}
+.panel-title{font-size:14px;font-weight:800;margin:0 0 4px}.panel-copy{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:20px}
+.field{margin-bottom:15px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px;font-weight:700}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 12px;color:var(--ink);outline:none}.field textarea{min-height:90px;resize:vertical;line-height:1.5}.field input:focus,.field textarea:focus{border-color:#7b8a80;box-shadow:0 0 0 3px rgba(48,72,59,.08)}
+.inspector .btn{width:100%;margin-top:4px}
+.upload{border:1px dashed #aaa99f;border-radius:14px;padding:16px;text-align:center;background:rgba(255,255,255,.55);font-size:12px;color:var(--muted);margin-bottom:14px}
+.mobile-tabs{display:none}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;background:#222;color:#fff;padding:11px 14px;border-radius:999px;font-size:12px;transition:.25s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(24,25,23,.42);display:none;align-items:center;justify-content:center;z-index:90;padding:20px}.modal.show{display:flex}.modal-card{width:min(680px,100%);max-height:85vh;overflow:auto;background:var(--panel);border-radius:24px;padding:24px;border:1px solid var(--line);box-shadow:var(--shadow)}.modal-card h3{margin:0 0 8px;font-size:24px}.modal-card p{color:var(--muted);font-size:13px;line-height:1.6}
+.minirow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.hidden{display:none!important}
+@media(max-width:1100px){
+  .layout{grid-template-columns:210px minmax(0,1fr)}.inspector{display:none}
+}
+@media(max-width:760px){
+  .topbar{height:58px;padding:0 14px}.brand{gap:8px}.brandmark{width:25px;height:25px}.ver{display:none}.actions .desktop-only{display:none}
+  .layout{display:block;min-height:auto}.sidebar{display:none}.main{padding:20px 16px 92px}
+  .hero{padding:20px 0 28px}.hero h1{font-size:51px;margin-top:14px}.hero-copy{font-size:16px;line-height:1.7}
+  .timeline{grid-template-columns:1fr;gap:14px;padding:22px 0 32px}.t-step{display:grid;grid-template-columns:54px 1fr;column-gap:8px}.t-step small{grid-row:1/3}.t-step b{margin:0 0 4px}
+  .section{padding:34px 0}.section-head{align-items:start;flex-direction:column;gap:6px}.exp-body{padding:20px}.exp-body h3{font-size:32px}.lead{font-size:16px}
+  .story-grid{grid-template-columns:1fr}.gallery{grid-template-columns:1fr}.media{min-height:220px}.media.tall{grid-row:auto}
+  .flow{grid-template-columns:1fr}.arr{transform:rotate(90deg)}
+  .mobile-tabs{position:fixed;z-index:60;display:grid;grid-template-columns:repeat(4,1fr);left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));padding:7px;background:rgba(250,248,243,.94);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+  .mobile-tabs button{border:0;background:transparent;padding:8px 2px;font-size:10px;color:var(--muted);font-weight:700}.mobile-tabs button.active{color:var(--accent)}
+  .cover{aspect-ratio:4/3}
+}
+@media print{
+ .topbar,.sidebar,.inspector,.mobile-tabs,.no-print{display:none!important}.layout{display:block}.main{padding:0}.section,.hero{break-inside:avoid}.exp-card{box-shadow:none}.app{background:#fff}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="brandmark">EJ</div><span>Experiment Journal</span><span class="ver">v0.1.0</span></div>
+  <div class="actions">
+    <button class="btn desktop-only" id="backupBtn">백업</button>
+    <button class="btn desktop-only" id="restoreBtn">불러오기</button>
+    <button class="btn primary" onclick="window.print()">PDF / 인쇄</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-label">Experiments</div>
+    <nav class="exp-nav" id="expNav"></nav>
+    <button class="btn new-exp" id="newExpBtn">＋ 새 실험</button>
+    <div class="side-label" style="margin-top:34px">View</div>
+    <button class="exp-item active" onclick="scrollToId('overview')"><span class="exp-num">●</span><span><span class="exp-title">전체 성장 리뷰</span><span class="exp-kicker">Riding the wave</span></span></button>
+  </aside>
+
+  <main class="main">
+    <section class="hero" id="overview">
+      <div class="eyebrow">AI Experiment Archive · 2026</div>
+      <h1>Riding<br/>the Wave.</h1>
+      <p class="hero-copy">모든 AI를 한 번에 따라잡는 대신, 작은 실험을 반복하며 제 기준과 감각을 만들어가고 있습니다. 결과물을 만드는 데서 시작해 일관성을 설계하고, 움직임을 만들고, 이제는 지식과 업무 흐름까지 설계하는 쪽으로 조금씩 확장되고 있습니다.</p>
+      <div class="wave" aria-hidden="true"><svg viewBox="0 0 900 60" preserveAspectRatio="none"><path d="M0,38 C120,8 190,58 310,29 C430,0 500,51 620,25 C740,-2 790,43 900,19"/></svg></div>
+    </section>
+    <section class="timeline" id="timeline"></section>
+    <div id="experimentSections"></div>
+    <section class="section" id="growth">
+      <div class="eyebrow">What changed across experiments</div>
+      <p class="big-quote">처음에는 AI에게 이미지를 만들어 달라고 했고, 지금은 AI와 함께 일하는 구조를 만들고 있습니다.</p>
+      <p class="quote-sub">도구는 계속 바뀌지만 실험을 설계하고, 실패를 관찰하고, 규칙을 만들고, 다음 업무에 연결하는 방식은 점점 제 것이 되어가고 있습니다.</p>
+    </section>
+    <section class="section">
+      <div class="eyebrow">Operating principle</div>
+      <p class="big-quote">모든 파도를 따라잡을 필요는 없다.<br/>계속 타보면서 나만의 균형을 찾으면 된다.</p>
+      <p class="quote-sub">I don't need to catch every wave. I just need to keep learning how to ride.</p>
+    </section>
+  </main>
+
+  <aside class="inspector" id="inspector">
+    <h3 class="panel-title">Review Composer</h3>
+    <p class="panel-copy">왼쪽에서 실험을 선택한 뒤 핵심만 적으면 중앙 리뷰가 바로 갱신됩니다.</p>
+    <div id="editorFields"></div>
+    <div class="upload" id="uploadZone">이미지·영상 추가<br/><small>이 기기에만 저장됩니다.</small><br/><input id="mediaInput" type="file" accept="image/*,video/*" multiple style="margin-top:10px;max-width:100%"></div>
+    <button class="btn primary" id="saveBtn">저장</button>
+  </aside>
+</div>
+
+<nav class="mobile-tabs">
+ <button class="active" onclick="scrollToId('overview')">Overview</button>
+ <button onclick="openExperimentPicker()">Experiments</button>
+ <button onclick="openMobileEditor()">Write</button>
+ <button onclick="openTools()">Tools</button>
+</nav>
+
+<div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="jsonInput" accept="application/json" class="hidden"/>
+</div>
+<script>
+const VERSION='0.1.0';
+const STORAGE_KEY='experiment-journal-v1';
+const defaultData={
+  activeId:'exp1',
+  experiments:[
+    {id:'exp1',num:'01',kicker:'CONSISTENCY',title:'감정을 캐릭터로 만들며, 일관성을 설계하다',date:'2026-08-11',
+     summary:'직장인 디자이너의 감정을 의인화한 Fluffy Fur 3D 캐릭터 12종. 한 장면의 완성도보다 여러 결과물이 하나의 세트처럼 보이도록 만드는 규칙을 실험했습니다.',
+     question:'서로 다른 12개의 감정을 표현하면서도 하나의 캐릭터 시스템처럼 보이게 할 수 있을까?',
+     tried:'형태·재질·조명·앵글·배경·톤을 고정하고 감정별 포즈와 표정만 가변 요소로 두었습니다. 여러 AI 도구의 결과도 비교했습니다.',
+     friction:'개별 생성할수록 털 재질과 체형이 달라지고, 색이 흔들렸습니다. 한 장씩 만들면 옆 캐릭터와 비교하며 수정하기가 어려웠습니다.',
+     learned:'생성형 AI의 일관성은 프롬프트를 길게 쓰는 문제가 아니라 무엇을 고정하고 무엇을 바꿀지 설계하는 문제였습니다.',
+     applied:'한 컷에 3×4 세트를 한 번에 생성하고, HEX 색상값을 지정해 교체 지시하는 방식으로 개선했습니다.',
+     next:'동일 캐릭터를 모션으로 확장해도 정체성이 유지되는지 실험하기.',
+     cover:'assets/exp1-gpt.jpg',
+     bundled:['assets/exp1-gemini.jpg','assets/exp1-gpt.jpg']},
+    {id:'exp2',num:'02',kicker:'IDENTITY',title:'나만의 캐릭터 IHIRI, 일상의 언어가 되다',date:'2026-08-29',
+     summary:'회사 이사, 카페, 팀워크, 러닝처럼 제 일상의 장면을 하나의 캐릭터로 이어보았습니다. 단순한 캐릭터 제작에서 정체성·상황 변주·모션 확장으로 실험이 넓어졌습니다.',
+     question:'얼굴·헤어·비율·재질을 유지하면서 상황과 행동, TPO만 자연스럽게 바꿀 수 있을까?',
+     tried:'CHARACTER / HAIR / PROPORTION LOCK을 두고 의상과 배경은 상황에 맞게 제한적으로 변화시켰습니다.',
+     friction:'생성할 때마다 다리 길이와 미니미 비율이 흔들렸고, 2D 캐릭터를 영상으로 움직이면 원본 인상이 달라지는 문제가 있었습니다.',
+     learned:'캐릭터 일관성은 “같은 그림”을 반복하는 것이 아니라 변하지 않아야 할 정체성과 변해도 되는 상황 요소를 분리하는 일이었습니다.',
+     applied:'일상의 반복 장면을 하나의 캐릭터 언어로 축적하고, 이미지에서 모션으로 확장하는 테스트까지 이어갔습니다.',
+     next:'장면 간 캐릭터 지문을 더 안정적으로 동기화하고 짧은 모션 루프 만들기.',
+     cover:'assets/exp2-character.jpg',
+     bundled:['assets/exp2-dayframe.jpg','assets/exp2-character.jpg','assets/exp2-moving.jpg']},
+    {id:'exp3',num:'03',kicker:'SYSTEM',title:'Zotero MCP로 논문·PDF 리서치 흐름을 만들다',date:'2026-09-10',
+     summary:'이번에는 이미지를 만드는 대신 AI가 자료를 읽고 정리하는 구조를 만들었습니다. Zotero를 원문 저장소로, Codex의 Zotero MCP를 연구 보조자로, Notion을 사람이 읽고 재사용하는 지식 아카이브로 연결했습니다.',
+     question:'전문 자료를 반복해서 찾아 읽고 정리해야 하는 일을, 출처를 보존하면서 재사용 가능한 업무 흐름으로 만들 수 있을까?',
+     tried:'Zotero → Codex MCP → 태그·연구유형·근거 수준 → Notion → B2B·B2C·커뮤니케이션 활용의 흐름을 설계했습니다.',
+     friction:'처음에는 API 키·라이브러리 ID·터미널 실행으로 직접 연결하려다 local-only와 JSON 오류가 반복됐습니다. MCP 서버 실행과 앱에 도구를 실제 등록하는 것은 다른 문제였습니다.',
+     learned:'AI 자동화는 도구를 “실행하는 것”보다 실제 업무 환경에서 호출 가능한 형태로 연결하고 운영 규칙을 만드는 것이 중요했습니다.',
+     applied:'원문·서지정보는 Zotero, 분석·요약·활용 기록은 Notion으로 역할을 분리했고, 연구 결과와 해석·콘텐츠 아이디어도 구분하는 원칙을 세웠습니다.',
+     next:'리서치봇을 실제 정기 수집·팀별 인사이트 제작 루프로 연결하기.',
+     cover:'assets/exp3-zotero.jpg',
+     bundled:['assets/exp3-zotero.jpg','assets/exp3-workflow.jpg']}
+  ]
+};
+let data=loadData();
+let activeId=data.activeId||data.experiments[0]?.id;
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function loadData(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||clone(defaultData)}catch(e){return clone(defaultData)}}
+function persist(){data.activeId=activeId;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));toast('저장되었습니다')}
+function esc(s=''){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function nl(s=''){return esc(s).replace(/\n/g,'<br>')}
+function scrollToId(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
+window.scrollToId=scrollToId;
+
+function render(){
+ renderNav();renderTimeline();renderExperiments();renderEditor();
+}
+function renderNav(){
+ const el=document.getElementById('expNav');
+ el.innerHTML=data.experiments.map(e=>`<button class="exp-item ${e.id===activeId?'active':''}" onclick="selectExp('${e.id}')"><span class="exp-num">${e.num}</span><span><span class="exp-title">${esc(e.title)}</span><span class="exp-kicker">${esc(e.kicker)}</span></span></button>`).join('');
+}
+function renderTimeline(){
+ document.getElementById('timeline').innerHTML=data.experiments.map(e=>`<div class="t-step"><small>${e.num}</small><b>${esc(e.kicker)}</b><span>${esc(e.title)}</span></div>`).join('');
+}
+function mediaMarkup(src,cap=''){
+ const isVideo=/\.(mp4|mov|webm)(\?|$)/i.test(src);
+ return `<div class="media">${isVideo?`<video src="${src}" muted loop playsinline controls></video>`:`<img src="${src}" alt="">`}${cap?`<div class="caption">${esc(cap)}</div>`:''}</div>`;
+}
+function renderExperiments(){
+ const wrap=document.getElementById('experimentSections');
+ wrap.innerHTML=data.experiments.map((e,idx)=>{
+   const all=(e.bundled||[]).concat(e.localMedia||[]);
+   const flow= e.id==='exp3' ? `<div class="flow"><div class="node">웹·논문·PDF</div><div class="arr">→</div><div class="node">Zotero<br>원문 저장</div><div class="arr">→</div><div class="node">Codex + MCP<br>검색·분석</div><div class="arr">→</div><div class="node">Notion<br>지식 아카이브</div><div class="arr">→</div><div class="node">B2B · B2C · Comm.</div></div>` : '';
+   return `<section class="section" id="${e.id}">
+     <div class="section-head"><div><div class="eyebrow">Experiment ${e.num} · ${esc(e.kicker)}</div><h2>${esc(e.title)}</h2></div><p>${esc(e.date||'')}</p></div>
+     <article class="exp-card">
+       <div class="cover">${e.cover?`<img src="${e.cover}" alt="">`:''}<div class="badge">${esc(e.kicker)}</div></div>
+       <div class="exp-body">
+         <p class="lead">${nl(e.summary)}</p>
+         <div class="story-grid">
+           <div class="story"><label>Question</label><p>${nl(e.question)}</p></div>
+           <div class="story"><label>Try</label><p>${nl(e.tried)}</p></div>
+           <div class="story"><label>Friction</label><p>${nl(e.friction)}</p></div>
+           <div class="story"><label>Change / Applied</label><p>${nl(e.applied)}</p></div>
+           <div class="story"><label>Learned</label><p><strong>${nl(e.learned)}</strong></p></div>
+           <div class="story"><label>Next</label><p>${nl(e.next)}</p></div>
+         </div>${flow}
+         ${all.length?`<div class="gallery">${all.map((m,i)=>mediaMarkup(m,i===0?'Output / Reference':'')).join('')}</div>`:''}
+       </div>
+     </article>
+   </section>`;
+ }).join('');
+}
+function selectExp(id){activeId=id;render();setTimeout(()=>scrollToId(id),20)}
+window.selectExp=selectExp;
+const fields=[
+ ['title','실험 제목','input'],['kicker','키워드','input'],['date','날짜','input'],
+ ['summary','한 줄 요약','textarea'],['question','문제 / 목표','textarea'],['tried','무엇을 시도했나요?','textarea'],
+ ['friction','어디서 막혔나요?','textarea'],['applied','무엇을 바꿨나요?','textarea'],['learned','무엇을 배웠나요?','textarea'],['next','다음 실험','textarea']
+];
+function renderEditor(target='editorFields'){
+ const e=data.experiments.find(x=>x.id===activeId); const el=document.getElementById(target); if(!e||!el)return;
+ el.innerHTML=fields.map(([k,label,t])=>`<div class="field"><label>${label}</label>${t==='textarea'?`<textarea data-key="${k}">${esc(e[k]||'')}</textarea>`:`<input data-key="${k}" value="${esc(e[k]||'')}">`}</div>`).join('');
+ el.querySelectorAll('[data-key]').forEach(inp=>inp.addEventListener('input',()=>{e[inp.dataset.key]=inp.value; renderNav();renderTimeline();renderExperiments()}));
+}
+document.getElementById('saveBtn').onclick=persist;
+document.getElementById('newExpBtn').onclick=()=>{
+ const n=data.experiments.length+1,id='exp'+Date.now();
+ data.experiments.push({id,num:String(n).padStart(2,'0'),kicker:'NEW EXPERIMENT',title:'새로운 실험',date:new Date().toISOString().slice(0,10),summary:'',question:'',tried:'',friction:'',applied:'',learned:'',next:'',bundled:[]});
+ activeId=id;render();persist();scrollToId(id);
+};
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1700)}
+function openModal(html){const m=document.getElementById('modal');document.getElementById('modalCard').innerHTML=html;m.classList.add('show')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('show')});
+function openExperimentPicker(){
+ openModal(`<h3>Experiments</h3><p>이동 중에도 실험을 빠르게 찾아 열 수 있습니다.</p><div class="minirow">${data.experiments.map(e=>`<button class="btn" onclick="document.getElementById('modal').classList.remove('show');selectExp('${e.id}')">${e.num} · ${esc(e.kicker)}</button>`).join('')}</div>`)
+}
+window.openExperimentPicker=openExperimentPicker;
+function openMobileEditor(){
+ openModal(`<h3>Quick Write</h3><p>선택한 실험의 내용을 수정합니다. 저장하면 이 기기의 브라우저에 보관됩니다.</p><div id="mobileEditor"></div><button class="btn primary" style="width:100%" onclick="persist();document.getElementById('modal').classList.remove('show')">저장</button>`);
+ renderEditor('mobileEditor');
+}
+window.openMobileEditor=openMobileEditor;
+function openTools(){
+ openModal(`<h3>Tools</h3><p>데스크톱과 모바일의 브라우저 저장공간은 서로 다릅니다. JSON 백업 파일로 데이터를 옮길 수 있습니다.</p><div class="minirow"><button class="btn" onclick="exportJSON()">JSON 백업</button><button class="btn" onclick="document.getElementById('jsonInput').click()">JSON 불러오기</button><button class="btn" onclick="window.print()">PDF / 인쇄</button></div>`)
+}
+window.openTools=openTools;
+function exportJSON(){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='experiment-journal-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('백업 파일을 만들었습니다')
+}
+window.exportJSON=exportJSON;
+document.getElementById('backupBtn').onclick=exportJSON;
+document.getElementById('restoreBtn').onclick=()=>document.getElementById('jsonInput').click();
+document.getElementById('jsonInput').addEventListener('change',async e=>{
+ const f=e.target.files[0];if(!f)return;try{data=JSON.parse(await f.text());activeId=data.activeId||data.experiments[0]?.id;persist();render();document.getElementById('modal').classList.remove('show')}catch(err){alert('백업 파일을 읽지 못했습니다.')}
+});
+
+const DB='experimentJournalMedia', STORE='files';
+function dbOpen(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function saveMedia(file){
+ const db=await dbOpen(), key='m_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+ await new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(file,key);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});
+ return key;
+}
+async function mediaURL(key){
+ const db=await dbOpen();const blob=await new Promise((res,rej)=>{const r=db.transaction(STORE).objectStore(STORE).get(key);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+ return blob?URL.createObjectURL(blob):'';
+}
+document.getElementById('mediaInput').addEventListener('change',async e=>{
+ const exp=data.experiments.find(x=>x.id===activeId);exp.mediaKeys=exp.mediaKeys||[];
+ for(const f of e.target.files){const key=await saveMedia(f);exp.mediaKeys.push(key)}
+ await hydrateLocalMedia(exp);persist();render();e.target.value='';
+});
+async function hydrateLocalMedia(exp){
+ if(!exp.mediaKeys?.length)return; exp.localMedia=[];
+ for(const k of exp.mediaKeys){const u=await mediaURL(k);if(u)exp.localMedia.push(u)}
+}
+async function hydrateAll(){for(const e of data.experiments)await hydrateLocalMedia(e);render()}
+hydrateAll();
+</script>
+</body>
+</html>
