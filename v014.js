@@ -475,3 +475,17 @@
   const root=document.getElementById('sections');
   if(root)new MutationObserver(apply).observe(root,{childList:true,subtree:true});
 })();
+
+
+(()=>{
+  const labels={QUESTION:'질문',TRY:'시도',FRICTION:'막힌 지점',CHANGE:'바꾼 점',LEARNED:'배운 점',NEXT:'다음 실험'};
+  function apply(){
+    document.querySelectorAll('#sections p').forEach(el=>{
+      if(el.querySelector('.ej-label-ko'))return;
+      el.innerHTML=el.innerHTML.replace(/(^|\s)(QUESTION|TRY|FRICTION|CHANGE|LEARNED|NEXT)(?=\s|$)/g,(m,space,en)=>space+en+'<span class="ej-label-ko">'+labels[en]+'</span>');
+    });
+  }
+  apply();
+  const root=document.getElementById('sections');
+  if(root)new MutationObserver(apply).observe(root,{childList:true,subtree:true});
+})();
