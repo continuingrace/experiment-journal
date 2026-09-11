@@ -293,7 +293,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.5';
+  const RELEASE_VERSION='0.3.6';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -369,7 +369,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.5';
+  const EJ_VERSION='0.3.6';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
@@ -380,7 +380,7 @@
     smallStyle:{fontFamily:'Pretendard,sans-serif',letterSpacing:'0.01',lineHeight:'1.6',fontSize:'16',fontWeight:'400'}
   };
   state.bigStyle=Object.assign({},defaults.bigStyle,state.bigStyle||old);
-  state.smallStyle=Object.assign({},defaults.smallStyle,state.smallStyle||{});
+  state.smallStyle=Object.assign({},defaults.smallStyle,state.smallStyle||{});const allowedFamilies=['Pretendard,sans-serif','Arial,sans-serif'];if(!allowedFamilies.includes(state.bigStyle.fontFamily))state.bigStyle.fontFamily=defaults.bigStyle.fontFamily;if(!allowedFamilies.includes(state.smallStyle.fontFamily))state.smallStyle.fontFamily=defaults.smallStyle.fontFamily;if(Number(state.smallStyle.fontSize)<10||Number(state.smallStyle.fontSize)>32)state.smallStyle.fontSize=defaults.smallStyle.fontSize;
   const safe=(value)=>String(value==null?'':value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const weights=[['100','Thin'],['200','ExtraLight'],['300','Light'],['400','Regular'],['500','Medium'],['600','SemiBold'],['700','Bold']];
   const families=[['Pretendard,sans-serif','Pretendard'],['Arial,sans-serif','Arial']];
