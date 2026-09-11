@@ -1,0 +1,14 @@
+/* v0.3.12 — mobile responsive hardening */
+@media (max-width:760px){
+  html,body{max-width:100%;overflow-x:hidden}
+  .top{width:100%;min-width:0;gap:12px}
+  .top .brand{min-width:0;flex:1 1 auto}
+  .top .brand>span:nth-child(2){min-width:0}
+  .top .actions{min-width:0;flex:0 0 auto}
+  .top .desktop{display:none!important}
+  .top .actions .btn.primary{flex:0 0 auto;white-space:normal;text-align:center}
+  .layout,.main,.section,.card,.body,.stories,.story{min-width:0;width:100%;max-width:100%}
+  .main{padding-bottom:calc(148px + env(safe-area-inset-bottom))}
+  .hero p,.lead,.story p,.sub,.head h2{overflow-wrap:anywhere;word-break:keep-all}
+  .mobilebar{max-width:calc(100% - 40px)}
+}
