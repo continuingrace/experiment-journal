@@ -1,0 +1,6 @@
+/* v0.3.16 — remove section rules and expose overview editor on mobile */
+#sections .cycle-group,
+#sections .cycle-group:last-child,
+#sections .cycle-group .section,
+#sections .cycle-group .section:last-child,
+#sections .cycle-group .section + .section{border-top:0!important;border-bottom:0!important}
