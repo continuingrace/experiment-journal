@@ -167,7 +167,7 @@
     changedTitle:'실험을 하며 달라진 점',
     changedLead:'반복 업무를 자동화하고, 일관성과 정체성을 설계하며, 이제는 지식의 흐름까지 연결하고 있습니다.',
     changedBody:'도구는 바뀌어도, 문제를 작게 정의하고 실행하며 나만의 기준을 남기는 방식은 점점 선명해지고 있습니다.',
-    style:{letterSpacing:'0.02',lineHeight:'1.35',fontSize:'56',fontWeight:'400',fontFamily:"'Noto Sans KR','Apple SD Gothic Neo',Arial,sans-serif"}
+    style:{letterSpacing:'0.02',lineHeight:'1.35',fontSize:'56',fontWeight:'400',fontFamily:"Noto Sans KR,Apple SD Gothic Neo,Arial,sans-serif"}
   };
   const state=data.overview||{};
   state.style=Object.assign({},defaults.style,state.style||{});
@@ -207,7 +207,7 @@
       '<div class="field"><label>기준 제목</label><input data-overview-v2="principleLabel" value="'+esc(state.principleLabel||'')+'"></div>'+
       '<div class="field"><label>기준 문장</label><textarea data-overview-v2="principle">'+esc(state.principle||'')+'</textarea></div>'+
       '<div class="overview-style-title">달라진 점과 기준의 글자 스타일</div>'+
-      '<div class="style-control"><span>글꼴</span><select data-overview-style="fontFamily"><option value="'Noto Sans KR','Apple SD Gothic Neo',Arial,sans-serif">기본 산세리프</option><option value="'Malgun Gothic',Arial,sans-serif">맑은 고딕</option><option value="Arial,sans-serif">Arial</option></select></div>'+
+      '<div class="style-control"><span>글꼴</span><select data-overview-style="fontFamily"><option value="Noto Sans KR,Apple SD Gothic Neo,Arial,sans-serif">기본 산세리프</option><option value="Malgun Gothic,Arial,sans-serif">맑은 고딕</option><option value="Arial,sans-serif">Arial</option></select></div>'+
       '<div class="style-control"><span>자간 <output data-overview-output="letterSpacing">'+Number(s.letterSpacing).toFixed(2)+'em</output></span><input type="range" min="-0.04" max="0.12" step="0.01" value="'+esc(s.letterSpacing)+'" data-overview-style="letterSpacing"></div>'+
       '<div class="style-control"><span>행간 <output data-overview-output="lineHeight">'+Number(s.lineHeight).toFixed(2)+'</output></span><input type="range" min="1" max="2.2" step="0.05" value="'+esc(s.lineHeight)+'" data-overview-style="lineHeight"></div>'+
       '<div class="style-control"><span>글자 크기 <output data-overview-output="fontSize">'+esc(s.fontSize)+'px</output></span><input type="range" min="28" max="76" step="1" value="'+esc(s.fontSize)+'" data-overview-style="fontSize"></div>'+
@@ -232,7 +232,7 @@
     applyOverview();
   }
   const style=document.createElement('style');
-  style.textContent='.overview-copy{font-family:var(--overview-font-family,'Noto Sans KR','Apple SD Gothic Neo',Arial,sans-serif)}.cycle-gallery{margin:0 0 56px;padding:20px 0 0;border-top:1px solid #d8d5cc}.cycle-gallery-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#71808b;margin-bottom:12px}.cycle-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.cycle-gallery figure{margin:0}.cycle-gallery img,.cycle-gallery video,.cycle-image-empty{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#e7e3d9}.cycle-image-empty{display:grid;place-items:center;padding:16px;text-align:center;color:#71808b;font-size:12px}.cycle-gallery figcaption{padding-top:8px;font-size:12px;color:#596875}@media(max-width:700px){.cycle-gallery-grid{grid-template-columns:1fr 1fr;gap:8px}.cycle-gallery{margin-bottom:40px}}';
+  style.textContent='.overview-copy{font-family:var(--overview-font-family,Noto Sans KR,Apple SD Gothic Neo,Arial,sans-serif)}.cycle-gallery{margin:0 0 56px;padding:20px 0 0;border-top:1px solid #d8d5cc}.cycle-gallery-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#71808b;margin-bottom:12px}.cycle-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.cycle-gallery figure{margin:0}.cycle-gallery img,.cycle-gallery video,.cycle-image-empty{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#e7e3d9}.cycle-image-empty{display:grid;place-items:center;padding:16px;text-align:center;color:#71808b;font-size:12px}.cycle-gallery figcaption{padding-top:8px;font-size:12px;color:#596875}@media(max-width:700px){.cycle-gallery-grid{grid-template-columns:1fr 1fr;gap:8px}.cycle-gallery{margin-bottom:40px}}';
   document.head.appendChild(style);
   document.getElementById('experimentTab').onclick=()=>setModeV2('experiment');
   document.getElementById('overviewTab').onclick=()=>setModeV2('overview');
