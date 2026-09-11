@@ -328,7 +328,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.10';
+  const RELEASE_VERSION='0.3.11';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -404,7 +404,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.10';
+  const EJ_VERSION='0.3.11';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
@@ -480,38 +480,6 @@
 
 
 (()=>{
-  const labels={QUESTION:'질문',TRY:'시도',FRICTION:'막힌 지점',CHANGE:'바꾼 점',LEARNED:'배운 점',NEXT:'다음 실험'};
-  const style=document.createElement('style');
-  style.textContent='.ej-label-ko{display:inline-block;margin-left:6px;color:#9aa3a8;font-size:.82em;font-weight:400;letter-spacing:0}';
-  document.head.appendChild(style);
-  function apply(){
-    const root=document.getElementById('sections');
-    if(!root)return;
-    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
-    const nodes=[];
-    while(walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(node=>{
-      if(node.parentElement&&node.parentElement.closest('.ej-label-ko'))return;
-      const re=/(^|\s)(QUESTION|TRY|FRICTION|CHANGE|LEARNED|NEXT)(?=\s|$)/g;
-      let match,last=0,frag=document.createDocumentFragment(),found=false;
-      while((match=re.exec(node.nodeValue))){
-        found=true;
-        frag.append(node.nodeValue.slice(last,match.index+match[1].length));
-        const en=match[2],span=document.createElement('span');
-        span.className='ej-label-ko';
-        span.textContent=labels[en];
-        frag.append(en,span);
-        last=re.lastIndex;
-      }
-      if(found){frag.append(node.nodeValue.slice(last));node.parentNode.replaceChild(frag,node);}
-    });
-  }
-  apply();
-  const root=document.getElementById('sections');
-  if(root)new MutationObserver(apply).observe(root,{childList:true,subtree:true});
-})();
-
-(()=>{
   const defaults={'01':'스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기','02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기','03':'유용한 MCP 소개하기'};
   const topics=()=>{data.overview=data.overview||{};data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});return data.overview.cycleTopics};
   const apply=()=>{const values=topics();document.querySelectorAll('#sections .cycle-group').forEach(group=>{const cycle=group.dataset.cycle||'01';const heading=group.querySelector('.cycle-group-heading strong');const next='사이클 '+Number(cycle)+(values[cycle]?' · '+values[cycle]:'');if(heading&&heading.textContent!==next)heading.textContent=next})};
@@ -522,14 +490,7 @@
 
 
 (()=>{
-  const labels={QUESTION:'질문',TRY:'시도',FRICTION:'막힌 지점',CHANGE:'바꾼 점',LEARNED:'배운 점',NEXT:'다음 실험'};
-  function apply(){
-    document.querySelectorAll('#sections p').forEach(el=>{
-      if(el.querySelector('.ej-label-ko'))return;
-      el.innerHTML=el.innerHTML.replace(/(^|\s)(QUESTION|TRY|FRICTION|CHANGE|LEARNED|NEXT)(?=\s|$)/g,(m,space,en)=>space+en+'<span class="ej-label-ko">'+labels[en]+'</span>');
-    });
-  }
-  apply();
-  const root=document.getElementById('sections');
-  if(root)new MutationObserver(apply).observe(root,{childList:true,subtree:true});
+  const style=document.createElement('style');
+  style.textContent='#sections .story>label::after{display:inline-block;margin-left:6px;color:#9aa3a8;font-size:.82em;font-weight:400;letter-spacing:0;text-transform:none}#sections .story:nth-child(1)>label::after{content:"질문"}#sections .story:nth-child(2)>label::after{content:"시도"}#sections .story:nth-child(3)>label::after{content:"막힌 지점"}#sections .story:nth-child(4)>label::after{content:"바꾼 점"}#sections .story:nth-child(5)>label::after{content:"배운 점"}#sections .story:nth-child(6)>label::after{content:"다음 실험"}';
+  document.head.appendChild(style);
 })();
