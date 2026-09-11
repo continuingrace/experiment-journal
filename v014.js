@@ -293,7 +293,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.1';
+  const RELEASE_VERSION='0.3.2';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -333,7 +333,7 @@
     const info=snapshot.data||{};const overview=info.overview||{};const experiments=Array.isArray(info.experiments)?info.experiments:[];let groups='';
     for(let i=0;i<experiments.length;i+=2){
       const cycle=pad(Math.floor(i/2)+1);const pair=experiments.slice(i,i+2);let cards='';
-      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">사이클 실험 '+cycle+' · '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div><div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
+      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">실험 '+(item.num||String(i+index+1).padStart(2,'0'))+' · '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div><div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
       groups+='<section class="cycle"><header><strong>사이클 실험 '+cycle+'</strong><span>실험 '+(i+1)+'–'+Math.min(i+2,experiments.length)+'</span></header><div class="pair">'+cards+'</div></section>';
     }
     return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>허들링클럽 1기 AI Experiment Archive · 2026</title><link rel="stylesheet" href="styles.css"></head><body><main><p class="archive">허들링클럽 1기 AI Experiment Archive · 2026</p><section class="hero"><p class="label">Riding the Wave.</p><h1>'+htmlText(overview.hero||'')+'</h1></section><section class="changed"><p class="eyebrow">'+htmlText(overview.changedTitle||'실험을 하며 달라진 점')+'</p><h2>'+htmlText(overview.changedLead||'')+'</h2><p>'+htmlText(overview.changedBody||'')+'</p></section>'+groups+'<section class="principle"><p class="eyebrow">'+htmlText(overview.principleLabel||'나만의 기준')+'</p><h2>'+htmlText(overview.principle||'')+'</h2></section><footer>저장일시 · '+htmlEsc(snapshot.savedAt)+' · '+htmlEsc(snapshot.version)+'</footer></main></body></html>';
@@ -367,4 +367,78 @@
     if(!document.getElementById('saveVersionBtn')){const save=document.createElement('button');save.id='saveVersionBtn';save.className=publish.className||'btn desktop';save.type='button';save.textContent='완성본 저장';save.onclick=saveVersion;publish.parentElement.insertBefore(save,publish)}
   }
   mountReleaseActions();
+})();
+(()=>{
+  const EJ_VERSION='0.3.2';
+  const fontLink=document.createElement('link');
+  if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
+  if(typeof data==='undefined'||!data.overview)return;
+  const state=data.overview;
+  const old=state.style||{};
+  const defaults={
+    bigStyle:{fontFamily:'Pretendard,sans-serif',letterSpacing:'0.01',lineHeight:'1.35',fontSize:'56',fontWeight:'500'},
+    smallStyle:{fontFamily:'Pretendard,sans-serif',letterSpacing:'0.01',lineHeight:'1.6',fontSize:'16',fontWeight:'400'}
+  };
+  state.bigStyle=Object.assign({},defaults.bigStyle,state.bigStyle||old);
+  state.smallStyle=Object.assign({},defaults.smallStyle,state.smallStyle||old);
+  const safe=(value)=>String(value==null?'':value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const weights=[['100','Thin'],['200','ExtraLight'],['300','Light'],['400','Regular'],['500','Medium'],['600','SemiBold'],['700','Bold']];
+  const families=[['Pretendard,sans-serif','Pretendard'],['Arial,sans-serif','Arial']];
+  const options=(items,current)=>items.map(([value,label])=>'<option value="'+safe(value)+'"'+(value===current?' selected':'')+'>'+label+'</option>').join('');
+  function applyStyles(){
+    const root=document.documentElement;
+    const big=state.bigStyle,small=state.smallStyle;
+    root.style.setProperty('--overview-big-font-family',big.fontFamily);
+    root.style.setProperty('--overview-big-letter-spacing',big.letterSpacing+'em');
+    root.style.setProperty('--overview-big-line-height',big.lineHeight);
+    root.style.setProperty('--overview-big-font-size',big.fontSize+'px');
+    root.style.setProperty('--overview-big-font-weight',big.fontWeight);
+    root.style.setProperty('--overview-small-font-family',small.fontFamily);
+    root.style.setProperty('--overview-small-letter-spacing',small.letterSpacing+'em');
+    root.style.setProperty('--overview-small-line-height',small.lineHeight);
+    root.style.setProperty('--overview-small-font-size',small.fontSize+'px');
+    root.style.setProperty('--overview-small-font-weight',small.fontWeight);
+    const archive=document.querySelector('#overview>.eyebrow');
+    if(archive)archive.style.cssText='font-size:16px;line-height:1.4;font-weight:600;letter-spacing:.04em;color:#596875';
+    relabelCycles();
+  }
+  function relabelCycles(){
+    document.querySelectorAll('#sections .cycle-group').forEach(group=>{
+      Array.from(group.children).filter(el=>/^exp/.test(el.id)).forEach(section=>{
+        const item=data.experiments.find(exp=>exp.id===section.id);
+        const eyebrow=section.querySelector('.eyebrow');
+        if(item&&eyebrow)eyebrow.textContent='실험 '+(item.num||'01')+' · '+(item.kicker||'');
+      });
+    });
+  }
+  const styleRow=(group,label,key,control)=>'<div class="style-control"><span>'+label+' <output data-ej-output="'+group+'-'+key+'">'+(key==='fontSize'?safe(state[group][key])+'px':key==='lineHeight'?safe(state[group][key]):key==='letterSpacing'?safe(state[group][key])+'em':safe(state[group][key]))+'</output></span>'+control+'</div>';
+  function buildEditorV3(){
+    const el=document.getElementById('overviewEditor');if(!el)return;
+    const big=state.bigStyle,small=state.smallStyle;
+    const font=(group,current)=>styleRow(group,'서체','fontFamily','<select data-ej-style="'+group+'.fontFamily">'+options(families,current)+'</select>');
+    const weight=(group,current)=>styleRow(group,'굵기','fontWeight','<select data-ej-style="'+group+'.fontWeight">'+options(weights,current)+'</select>');
+    const range=(group,key,label,min,max,step,value,suffix)=>styleRow(group,label,key,'<input type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+safe(value)+'" data-ej-style="'+group+'.'+key+'">');
+    el.innerHTML='<div class="overview-editor-title">페이지 문구와 글자 스타일</div>'+
+      '<div class="field"><label>메인 소개 문구</label><textarea data-ej-text="hero">'+safe(state.hero||'')+'</textarea></div>'+
+      '<div class="field"><label>실험을 하며 달라진 점</label><textarea data-ej-text="changedLead">'+safe(state.changedLead||'')+'</textarea></div>'+
+      '<div class="field"><label>달라진 과정 설명</label><textarea data-ej-text="changedBody">'+safe(state.changedBody||'')+'</textarea></div>'+
+      '<div class="field"><label>기준 제목</label><input data-ej-text="principleLabel" value="'+safe(state.principleLabel||'')+'"></div>'+
+      '<div class="field"><label>기준 문장</label><textarea data-ej-text="principle">'+safe(state.principle||'')+'</textarea></div>'+
+      '<div class="overview-style-title">큰 글자 스타일</div>'+
+      font('bigStyle',big.fontFamily)+range('bigStyle','letterSpacing','자간','-0.04','0.12','0.01',big.letterSpacing,'em')+range('bigStyle','lineHeight','행간','1','2.2','0.05',big.lineHeight,'')+range('bigStyle','fontSize','글자 크기','28','88','1',big.fontSize,'px')+weight('bigStyle',big.fontWeight)+
+      '<div class="overview-style-title">작은 글자 스타일</div>'+
+      font('smallStyle',small.fontFamily)+range('smallStyle','letterSpacing','자간','-0.04','0.12','0.01',small.letterSpacing,'em')+range('smallStyle','lineHeight','행간','1','2.4','0.05',small.lineHeight,'')+range('smallStyle','fontSize','글자 크기','10','32','1',small.fontSize,'px')+weight('smallStyle',small.fontWeight)+
+      '<button class="btn primary" id="overviewSaveV3" type="button">문구와 스타일 저장</button>';
+    el.querySelectorAll('[data-ej-text]').forEach(input=>input.oninput=()=>{state[input.dataset.ejText]=input.value;applyStyles()});
+    el.querySelectorAll('[data-ej-style]').forEach(input=>input.oninput=()=>{const parts=input.dataset.ejStyle.split('.');state[parts[0]][parts[1]]=input.value;const out=el.querySelector('[data-ej-output="'+parts[0]+'-'+parts[1]+'"]');if(out)out.textContent=parts[1]==='fontSize'?input.value+'px':parts[1]==='letterSpacing'?input.value+'em':input.value;applyStyles()});
+    document.getElementById('overviewSaveV3').onclick=()=>{data.overview=state;localStorage.setItem('experiment-journal-overview-v1',JSON.stringify(state));if(typeof persist==='function')persist();if(typeof toast==='function')toast('문구와 스타일이 저장되었습니다')};
+  }
+  function setOverviewModeV3(){
+    const tab=document.getElementById('overviewTab');if(!tab)return;
+    tab.textContent='문구·스타일 편집';
+    tab.onclick=()=>{document.getElementById('editor').hidden=true;document.getElementById('overviewEditor').hidden=false;document.getElementById('manager').hidden=true;document.querySelector('.upload').hidden=true;document.getElementById('save').hidden=true;document.getElementById('experimentTab').classList.remove('active');tab.classList.add('active');buildEditorV3();applyStyles()};
+  }
+  const css=document.createElement('style');css.textContent='.overview-copy{font-family:var(--overview-small-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-small-letter-spacing,.01em)!important;line-height:var(--overview-small-line-height,1.6)!important;font-size:var(--overview-small-font-size,16px)!important;font-weight:var(--overview-small-font-weight,400)!important}.overview-big{font-family:var(--overview-big-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-big-letter-spacing,.01em)!important;line-height:var(--overview-big-line-height,1.35)!important;font-size:var(--overview-big-font-size,56px)!important;font-weight:var(--overview-big-font-weight,500)!important}#overview>.eyebrow{font-size:16px!important;font-weight:600!important;letter-spacing:.04em!important}.cycle-group-heading strong{font-size:20px!important;line-height:1.25;font-weight:600!important;letter-spacing:.04em}.cycle-group .section .eyebrow{font-size:12px!important}';document.head.appendChild(css);
+  setOverviewModeV3();applyStyles();
+  const sectionsRoot=document.getElementById('sections');if(sectionsRoot)new MutationObserver(()=>relabelCycles()).observe(sectionsRoot,{childList:true,subtree:true});
 })();
