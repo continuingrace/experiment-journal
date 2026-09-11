@@ -1,0 +1,46 @@
+/* v0.1.3 — spacing/typography refinement based on Wanted Montage foundations */
+body{overflow-x:hidden;letter-spacing:0;word-break:keep-all;overflow-wrap:break-word}
+.btn{min-height:40px;padding:0 16px;font-size:14px;line-height:20px;letter-spacing:.0145em;border-radius:999px;display:inline-flex;align-items:center;justify-content:center}
+.btn.tiny{min-height:32px;padding:0 12px;font-size:13px;line-height:18px;letter-spacing:.0194em}
+.main{max-width:1100px;width:100%;margin:0 auto;padding:48px clamp(32px,4vw,64px) 104px}
+.hero{padding:48px 0 56px}
+.eyebrow{font-size:13px;line-height:18px;letter-spacing:.0194em;font-weight:700}
+.hero h1{font-size:clamp(56px,6vw,72px);line-height:1.22;letter-spacing:-.012em;margin:24px 0 32px}
+.hero p{font-size:17px;line-height:26px;letter-spacing:0;color:#4c5048;max-width:780px}
+.timeline{gap:24px;padding:40px 0 56px}
+.step{padding-top:16px}
+.step small{font-size:13px;line-height:18px;letter-spacing:.0194em}
+.step b{font-size:20px;line-height:28px;letter-spacing:0;margin:4px 0 8px}
+.step span{font-size:15px;line-height:24px;letter-spacing:.0096em}
+.section{padding:64px 0}
+.head{align-items:flex-end;gap:24px;margin-bottom:32px}
+.head>div{min-width:0}
+.head .eyebrow{margin-bottom:16px}
+.head h2{margin:0;font-size:40px;line-height:52px;letter-spacing:-.018em;max-width:900px}
+.date{font-size:14px;line-height:20px;letter-spacing:.0145em}
+.card{border-radius:24px}
+.badge{top:20px;left:20px;min-height:32px;padding:6px 12px;font-size:12px;line-height:20px;letter-spacing:.0252em}
+.body{padding:32px}
+.lead{font-size:16px;line-height:26px;letter-spacing:.0057em}
+.stories{gap:16px;margin-top:32px}
+.story{padding:20px}
+.story label{font-size:12px;line-height:16px;letter-spacing:.0252em;margin-bottom:12px}
+.story p{font-size:15px;line-height:24px;letter-spacing:.0096em}
+.gallery{gap:16px;margin-top:24px}
+.flow{gap:8px;margin-top:24px}
+.node{font-size:13px;line-height:18px;padding:16px 12px}
+.big{font-size:56px;line-height:72px;letter-spacing:-.015em;margin:24px 0;max-width:980px}
+.sub{font-size:16px;line-height:26px;letter-spacing:.0057em;max-width:780px}
+.panel-title{font-size:20px;line-height:28px;letter-spacing:-.012em}
+.panel-copy{font-size:14px;line-height:22px;letter-spacing:.0145em;margin-bottom:24px}
+.field{margin-bottom:20px}.field label{font-size:13px;line-height:18px;letter-spacing:.0194em;margin-bottom:8px}.field input,.field textarea{font-size:15px;line-height:22px;letter-spacing:.0096em;padding:12px 14px}.field textarea{min-height:104px;line-height:24px}
+.upload{padding:20px;font-size:13px;line-height:20px;margin:20px 0}.manager-head{margin:24px 0 12px}.manager-head b{font-size:15px;line-height:22px}.manager-head span{font-size:12px;line-height:16px;letter-spacing:.0252em}.row{padding:12px;gap:12px}.mname{font-size:14px;line-height:20px}.msub{font-size:12px;line-height:16px;margin:4px 0 8px}.mobilebar{border-radius:20px}
+.section,.head,.card,.body{min-width:0;max-width:100%}.head h2,.hero h1,.hero p,.lead,.big,.sub,.story p{max-width:100%}
+@media(max-width:760px){
+.top{height:64px;padding:0 20px}.mark{width:32px;height:32px;font-size:12px}.brand{gap:12px;font-size:18px;line-height:26px;letter-spacing:-.002em}.actions{gap:8px}.actions .btn.primary{min-height:40px;padding:0 16px;font-size:14px}
+.main{max-width:none;margin:0;padding:32px 20px 112px}.hero{padding:32px 0 48px}.eyebrow{font-size:12px;line-height:16px;letter-spacing:.0252em}.hero h1{font-size:56px;line-height:72px;letter-spacing:-.012em;margin:24px 0 32px}.hero p{font-size:16px;line-height:26px;letter-spacing:.0057em}
+.timeline{gap:24px;padding:32px 0 48px}.step{grid-template-columns:64px minmax(0,1fr);column-gap:12px;padding-top:16px}.step small{font-size:15px;line-height:22px;letter-spacing:.0096em}.step b{font-size:20px;line-height:28px;letter-spacing:0;margin:0 0 6px}.step span{font-size:15px;line-height:24px;letter-spacing:.0096em}
+.section{padding:56px 0}.head{gap:12px;margin-bottom:32px}.head .eyebrow{margin-bottom:16px}.head h2{font-size:36px;line-height:48px;letter-spacing:-.015em}.date{font-size:14px;line-height:20px;letter-spacing:.0145em}
+.cover{aspect-ratio:4/3}.empty{font-size:14px;line-height:22px;padding:24px}.badge{top:20px;left:20px;min-height:32px;padding:6px 12px;font-size:12px;line-height:20px;letter-spacing:.0252em}.body{padding:24px 20px 28px}.lead{font-size:16px;line-height:26px;letter-spacing:.0057em}.stories,.gallery{gap:16px}.stories{margin-top:32px}.story{padding:20px}.story label{font-size:12px;line-height:16px;letter-spacing:.0252em;margin-bottom:12px}.story p{font-size:15px;line-height:24px;letter-spacing:.0096em}.media{min-height:240px}
+.big{font-size:40px;line-height:52px;letter-spacing:-.015em;margin:24px 0}.sub{font-size:16px;line-height:26px;letter-spacing:.0057em}.mobilebar{left:20px;right:20px;bottom:calc(16px + env(safe-area-inset-bottom));padding:8px;gap:4px}.mobilebar button{min-height:40px;padding:0 8px;font-size:13px;line-height:18px;letter-spacing:.0194em}
+}
