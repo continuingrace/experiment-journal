@@ -46,13 +46,14 @@
 
 (()=>{
   const defaults={
-    '01':'스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기',
+    '01':'스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기',
     '02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기',
     '03':'유용한 MCP 소개하기'
   };
   const ensure=()=>{
     data.overview=data.overview||{};
     data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});
+    if(data.overview.cycleTopics['01']==='스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기')data.overview.cycleTopics['01']=defaults['01'];
     return data.overview.cycleTopics;
   };
   const topics=()=>ensure().cycleTopics;
@@ -61,7 +62,7 @@
     document.querySelectorAll('#sections .cycle-group').forEach(group=>{
       const cycle=group.dataset.cycle||'01';
       const heading=group.querySelector('.cycle-group-heading strong');
-      const next='사이클 '+Number(cycle)+(values[cycle]?' · '+values[cycle]:'');
+      const next='[사이클 '+Number(cycle)+']'+(values[cycle]?' '+values[cycle]:'');
       if(heading&&heading.textContent!==next)heading.textContent=next;
     });
   }
@@ -315,7 +316,7 @@
     for(let i=0;i<items.length;i+=2){
       const pair=items.slice(i,i+2);const first=data.experiments.find(e=>e.id===pair[0].id);const cycle=first?.cycle||String(Math.floor(i/2)+1).padStart(2,'0');
       const group=document.createElement('div');group.className='cycle-group';group.dataset.cycle=cycle;
-      const heading=document.createElement('div');heading.className='cycle-group-heading';heading.innerHTML='<strong>사이클 실험 '+cycle+'</strong><span>실험 '+(i+1)+'–'+Math.min(i+2,items.length)+'</span>';group.appendChild(heading);
+      const heading=document.createElement('div');heading.className='cycle-group-heading';heading.innerHTML='<strong>[사이클 '+Number(cycle)+']</strong>';group.appendChild(heading);
       root.insertBefore(group,pair[0]);pair.forEach(el=>group.appendChild(el));
     }
   }
@@ -328,7 +329,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.12';
+  const RELEASE_VERSION='0.3.13';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -368,8 +369,8 @@
     const info=snapshot.data||{};const overview=info.overview||{};const experiments=Array.isArray(info.experiments)?info.experiments:[];let groups='';
     for(let i=0;i<experiments.length;i+=2){
       const cycle=pad(Math.floor(i/2)+1);const topic=(overview.cycleTopics||{})[cycle]||'';const pair=experiments.slice(i,i+2);let cards='';
-      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">실험 '+(item.num||String(i+index+1).padStart(2,'0'))+'. '+htmlText(item.title||'')+' | '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div><div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
-      groups+='<section class="cycle"><header><strong>사이클 '+Number(cycle)+(topic?' · '+htmlText(topic):'')+'</strong><span>실험 '+(i+1)+'–'+Math.min(i+2,experiments.length)+'</span></header><div class="pair">'+cards+'</div></section>';
+      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">실험 '+Number(item.num||i+index+1)+'. '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div><div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
+      groups+='<section class="cycle"><header><strong>[사이클 '+Number(cycle)+']'+(topic?' '+htmlText(topic):'')+'</strong></header><div class="pair">'+cards+'</div></section>';
     }
     return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>허들링클럽 1기 AI Experiment Archive · 2026</title><link rel="stylesheet" href="styles.css"></head><body><main><p class="archive">허들링클럽 1기 AI Experiment Archive · 2026</p><section class="hero"><p class="label">Riding the Wave.</p><h1>'+htmlText(overview.hero||'')+'</h1></section><section class="changed"><p class="eyebrow">'+htmlText(overview.changedTitle||'실험을 하며 달라진 점')+'</p><h2>'+htmlText(overview.changedLead||'')+'</h2><p>'+htmlText(overview.changedBody||'')+'</p></section>'+groups+'<section class="principle"><p class="eyebrow">'+htmlText(overview.principleLabel||'나만의 기준')+'</p><h2>'+htmlText(overview.principle||'')+'</h2></section><footer>저장일시 · '+htmlEsc(snapshot.savedAt)+' · '+htmlEsc(snapshot.version)+'</footer></main></body></html>';
   }
@@ -404,7 +405,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.12';
+  const EJ_VERSION='0.3.13';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
@@ -442,7 +443,7 @@
       Array.from(group.children).filter(el=>/^exp/.test(el.id)).forEach(section=>{
         const item=data.experiments.find(exp=>exp.id===section.id);
         const eyebrow=section.querySelector('.eyebrow');
-        if(item&&eyebrow){const next='실험 '+(item.num||'01')+'. '+(item.title||'')+' | '+(item.kicker||'');if(eyebrow.textContent!==next)eyebrow.textContent=next}
+        if(item&&eyebrow){const next='실험 '+Number(item.num||1)+'. '+(item.kicker||'');if(eyebrow.textContent!==next)eyebrow.textContent=next}
       });
     });
   }
@@ -480,9 +481,9 @@
 
 
 (()=>{
-  const defaults={'01':'스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기','02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기','03':'유용한 MCP 소개하기'};
-  const topics=()=>{data.overview=data.overview||{};data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});return data.overview.cycleTopics};
-  const apply=()=>{const values=topics();document.querySelectorAll('#sections .cycle-group').forEach(group=>{const cycle=group.dataset.cycle||'01';const heading=group.querySelector('.cycle-group-heading strong');const next='사이클 '+Number(cycle)+(values[cycle]?' · '+values[cycle]:'');if(heading&&heading.textContent!==next)heading.textContent=next})};
+  const defaults={'01':'스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기','02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기','03':'유용한 MCP 소개하기'};
+  const topics=()=>{data.overview=data.overview||{};data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});if(data.overview.cycleTopics['01']==='스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기')data.overview.cycleTopics['01']=defaults['01'];return data.overview.cycleTopics};
+  const apply=()=>{const values=topics();document.querySelectorAll('#sections .cycle-group').forEach(group=>{const cycle=group.dataset.cycle||'01';const heading=group.querySelector('.cycle-group-heading strong');const next='[사이클 '+Number(cycle)+']'+(values[cycle]?' '+values[cycle]:'');if(heading&&heading.textContent!==next)heading.textContent=next})};
   const mount=()=>{const el=document.getElementById('overviewEditor');if(!el||document.getElementById('cycleTopicEditor'))return;const values=topics();const block=document.createElement('div');block.id='cycleTopicEditor';block.innerHTML='<div class="overview-style-title">사이클 주제</div><p class="cycle-topic-help">각 사이클의 두 실험을 한 문장으로 묶어 적어 주세요.</p>'+['01','02','03'].map(c=>'<div class="field"><label>사이클 '+c+' 주제</label><input data-cycle-topic="'+c+'" value="'+esc(values[c]||'')+'"></div>').join('');const save=el.querySelector('#overviewSaveV3');if(save)el.insertAdjacentElement('beforebegin',block);else el.appendChild(block);block.querySelectorAll('[data-cycle-topic]').forEach(input=>input.oninput=()=>{topics()[input.dataset.cycleTopic]=input.value;apply()})};
   const tab=document.getElementById('overviewTab');if(tab){const previous=tab.onclick;tab.onclick=()=>{if(previous)previous();setTimeout(mount,0)}}
   const style=document.createElement('style');style.textContent='.cycle-topic-help{font-size:12px;color:#71808b;line-height:1.5;margin:-4px 0 12px}.cycle-group-heading strong{max-width:80%;line-height:1.45}';document.head.appendChild(style);topics();setTimeout(apply,0);const root=document.getElementById('sections');if(root)new MutationObserver(()=>setTimeout(apply,0)).observe(root,{childList:true,subtree:true});
