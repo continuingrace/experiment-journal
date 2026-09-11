@@ -1,0 +1,10 @@
+/* Compatibility rules for cycle groups rendered by the existing editor script. */
+html body #sections .cycle-group{border-top:0;padding:var(--section-gap) 0;margin:0}
+html body #sections .cycle-group:last-child{border-bottom:0}
+html body #sections .cycle-group .section,
+html body #sections .cycle-group .section:last-child,
+html body #sections .cycle-group .section+.section{border-top:0!important;border-bottom:0!important}
+.cycle-group-heading{margin-bottom:var(--block-gap)}
+.cycle-group-heading strong{font-size:14px;line-height:20px;letter-spacing:.05em}
+.cycle-group-heading span{font-size:13px;line-height:20px}
+@media(max-width:760px){html body #sections .cycle-group{padding:56px 0}.cycle-group-heading{margin-bottom:28px}}
