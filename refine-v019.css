@@ -1,0 +1,58 @@
+/* v0.3.19 — typography and spacing precision pass */
+:root{
+  --fs-display:clamp(56px,6vw,80px);
+  --fs-h1:clamp(32px,3.2vw,44px);
+  --fs-h2:20px;
+  --fs-body-lg:18px;
+  --fs-body:16px;
+  --fs-small:14px;
+  --fs-meta:13px;
+  --lh-display:1.08;
+  --lh-heading:1.22;
+  --lh-body:1.75;
+  --track-display:-.03em;
+  --track-heading:-.015em;
+  --track-body:0;
+  --control-height:44px;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-10:40px;
+  --space-12:48px;
+  --space-16:64px;
+  --space-20:80px;
+}
+body{letter-spacing:var(--track-body)}
+.hero h1{font-size:var(--fs-display);line-height:var(--lh-display);letter-spacing:var(--track-display)}
+.hero p{font-size:var(--fs-body-lg);line-height:1.7;letter-spacing:var(--track-body)}
+.head h2{font-size:var(--fs-h1);line-height:var(--lh-heading);letter-spacing:var(--track-heading)}
+.lead{font-size:17px;line-height:1.75;letter-spacing:var(--track-body)}
+.story{padding:var(--space-6)}
+.story label{font-size:13px;line-height:20px;letter-spacing:.04em;margin-bottom:var(--space-3)}
+.story p{font-size:var(--fs-body);line-height:1.75;letter-spacing:var(--track-body)}
+.sub{font-size:17px;line-height:1.75;letter-spacing:var(--track-body)}
+.date,.cap{font-size:13px;line-height:20px}
+.tag{font-size:12px;line-height:18px}
+.btn{min-height:var(--control-height);padding:10px 16px;font-size:14px;line-height:20px}
+.btn.tiny{min-height:36px;padding:8px 12px;font-size:13px;line-height:18px}
+.field{margin-bottom:var(--space-6)}
+.field label{font-size:14px;line-height:20px;letter-spacing:.01em;margin-bottom:var(--space-2)}
+.field input,.field textarea,.field select{min-height:var(--control-height);font-size:16px;line-height:24px;padding:10px 14px;letter-spacing:var(--track-body)}
+.field textarea{min-height:112px;line-height:1.7}
+.panel-copy{font-size:14px;line-height:22px}
+.manager-head{margin:var(--space-8) 0 var(--space-3)}
+.upload{padding:var(--space-6);margin:var(--space-6) 0;font-size:14px;line-height:22px}
+.modal-card>p{font-size:15px;line-height:24px}
+@media(max-width:760px){
+  .hero h1{font-size:clamp(48px,13vw,52px);line-height:1.08;letter-spacing:-.025em;margin:var(--space-5) 0 var(--space-8)}
+  .hero p{font-size:16px;line-height:1.75}
+  .head{margin-bottom:var(--space-8)}
+  .head h2{font-size:clamp(32px,8.5vw,38px);line-height:1.25}
+  .body{padding:var(--space-6) var(--space-5) var(--space-8)}
+  .stories{margin-top:var(--space-8)}
+  .mobilebar button{min-height:44px;font-size:14px;line-height:20px}
+}
