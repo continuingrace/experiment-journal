@@ -293,7 +293,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.4';
+  const RELEASE_VERSION='0.3.5';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -369,7 +369,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.4';
+  const EJ_VERSION='0.3.5';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
@@ -380,7 +380,7 @@
     smallStyle:{fontFamily:'Pretendard,sans-serif',letterSpacing:'0.01',lineHeight:'1.6',fontSize:'16',fontWeight:'400'}
   };
   state.bigStyle=Object.assign({},defaults.bigStyle,state.bigStyle||old);
-  state.smallStyle=Object.assign({},defaults.smallStyle,state.smallStyle||old);
+  state.smallStyle=Object.assign({},defaults.smallStyle,state.smallStyle||{});
   const safe=(value)=>String(value==null?'':value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const weights=[['100','Thin'],['200','ExtraLight'],['300','Light'],['400','Regular'],['500','Medium'],['600','SemiBold'],['700','Bold']];
   const families=[['Pretendard,sans-serif','Pretendard'],['Arial,sans-serif','Arial']];
@@ -411,7 +411,7 @@
       });
     });
   }
-  const styleRow=(group,label,key,control)=>'<div class="style-control"><span>'+label+' <output data-ej-output="'+group+'-'+key+'">'+(key==='fontSize'?safe(state[group][key])+'px':key==='lineHeight'?safe(state[group][key]):key==='letterSpacing'?safe(state[group][key])+'em':safe(state[group][key]))+'</output></span>'+control+'</div>';
+  const styleRow=(group,label,key,control)=>{const value=key==='fontSize'?safe(state[group][key])+'px':key==='lineHeight'?safe(state[group][key]):key==='letterSpacing'?safe(state[group][key])+'em':'';return '<div class="style-control"><span>'+label+(value?' <output data-ej-output="'+group+'-'+key+'">'+value+'</output>':'')+'</span>'+control+'</div>'};
   function buildEditorV3(){
     const el=document.getElementById('overviewEditor');if(!el)return;
     const big=state.bigStyle,small=state.smallStyle;
@@ -438,7 +438,7 @@
     tab.textContent='문구·스타일 편집';
     tab.onclick=()=>{document.getElementById('editor').hidden=true;document.getElementById('overviewEditor').hidden=false;document.getElementById('manager').hidden=true;document.querySelector('.upload').hidden=true;document.getElementById('save').hidden=true;document.getElementById('experimentTab').classList.remove('active');tab.classList.add('active');buildEditorV3();applyStyles()};
   }
-  const css=document.createElement('style');css.textContent='.overview-copy{font-family:var(--overview-small-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-small-letter-spacing,.01em)!important;line-height:var(--overview-small-line-height,1.6)!important;font-size:var(--overview-small-font-size,16px)!important;font-weight:var(--overview-small-font-weight,400)!important}.overview-big{font-family:var(--overview-big-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-big-letter-spacing,.01em)!important;line-height:var(--overview-big-line-height,1.35)!important;font-size:var(--overview-big-font-size,56px)!important;font-weight:var(--overview-big-font-weight,500)!important}#overview>.eyebrow{font-size:16px!important;font-weight:600!important;letter-spacing:.04em!important}.cycle-group-heading strong{font-size:20px!important;line-height:1.25;font-weight:600!important;letter-spacing:.04em}.cycle-group .section .eyebrow{font-size:12px!important}';document.head.appendChild(css);
+  const css=document.createElement('style');css.textContent='.overview-copy{font-family:var(--overview-small-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-small-letter-spacing,.01em)!important;line-height:var(--overview-small-line-height,1.6)!important;font-size:var(--overview-small-font-size,16px)!important;font-weight:var(--overview-small-font-weight,400)!important}.overview-big{font-family:var(--overview-big-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-big-letter-spacing,.01em)!important;line-height:var(--overview-big-line-height,1.35)!important;font-size:var(--overview-big-font-size,56px)!important;font-weight:var(--overview-big-font-weight,500)!important}#overview>.eyebrow{font-size:16px!important;font-weight:600!important;letter-spacing:.04em!important;text-transform:none!important}.cycle-group-heading strong{font-size:20px!important;line-height:1.25;font-weight:600!important;letter-spacing:.04em}.cycle-group .section .eyebrow{font-size:12px!important}';document.head.appendChild(css);
   setOverviewModeV3();applyStyles();
   const sectionsRoot=document.getElementById('sections');if(sectionsRoot)new MutationObserver(()=>relabelCycles()).observe(sectionsRoot,{childList:true,subtree:true});
 })();
