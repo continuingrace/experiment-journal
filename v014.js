@@ -69,7 +69,7 @@
     if(['스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기','스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기'].includes(data.overview.cycleTopics['01']))data.overview.cycleTopics['01']=defaults['01'];
     return data.overview.cycleTopics;
   };
-  const topics=()=>ensure().cycleTopics;
+  const topics=()=>ensure();
   function applyTopics(){
     const values=topics();
     document.querySelectorAll('#sections .cycle-group').forEach(group=>{
@@ -342,7 +342,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.17';
+  const RELEASE_VERSION='0.3.18';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -418,7 +418,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.17';
+  const EJ_VERSION='0.3.18';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
