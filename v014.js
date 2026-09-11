@@ -293,7 +293,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.2';
+  const RELEASE_VERSION='0.3.3';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -369,7 +369,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.2';
+  const EJ_VERSION='0.3.3';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
@@ -407,7 +407,7 @@
       Array.from(group.children).filter(el=>/^exp/.test(el.id)).forEach(section=>{
         const item=data.experiments.find(exp=>exp.id===section.id);
         const eyebrow=section.querySelector('.eyebrow');
-        if(item&&eyebrow)eyebrow.textContent='실험 '+(item.num||'01')+' · '+(item.kicker||'');
+        if(item&&eyebrow){const next='실험 '+(item.num||'01')+' · '+(item.kicker||'');if(eyebrow.textContent!==next)eyebrow.textContent=next}
       });
     });
   }
