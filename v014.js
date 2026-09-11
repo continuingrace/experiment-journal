@@ -46,14 +46,14 @@
 
 (()=>{
   const defaults={
-    '01':'스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기',
+    '01':'스킬 공유: 내 데이터로 나만의 요약 워크 플로우 만들기',
     '02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기',
     '03':'유용한 MCP 소개하기'
   };
   const ensure=()=>{
     data.overview=data.overview||{};
     data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});
-    if(data.overview.cycleTopics['01']==='스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기')data.overview.cycleTopics['01']=defaults['01'];
+    if(['스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기','스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기'].includes(data.overview.cycleTopics['01']))data.overview.cycleTopics['01']=defaults['01'];
     return data.overview.cycleTopics;
   };
   const topics=()=>ensure().cycleTopics;
@@ -329,7 +329,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.13';
+  const RELEASE_VERSION='0.3.14';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -405,7 +405,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.13';
+  const EJ_VERSION='0.3.14';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
@@ -481,8 +481,8 @@
 
 
 (()=>{
-  const defaults={'01':'스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기','02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기','03':'유용한 MCP 소개하기'};
-  const topics=()=>{data.overview=data.overview||{};data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});if(data.overview.cycleTopics['01']==='스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기')data.overview.cycleTopics['01']=defaults['01'];return data.overview.cycleTopics};
+  const defaults={'01':'스킬 공유: 내 데이터로 나만의 요약 워크 플로우 만들기','02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기','03':'유용한 MCP 소개하기'};
+  const topics=()=>{data.overview=data.overview||{};data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});if(['스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기','스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기'].includes(data.overview.cycleTopics['01']))data.overview.cycleTopics['01']=defaults['01'];return data.overview.cycleTopics};
   const apply=()=>{const values=topics();document.querySelectorAll('#sections .cycle-group').forEach(group=>{const cycle=group.dataset.cycle||'01';const heading=group.querySelector('.cycle-group-heading strong');const next='[사이클 '+Number(cycle)+']'+(values[cycle]?' '+values[cycle]:'');if(heading&&heading.textContent!==next)heading.textContent=next})};
   const mount=()=>{const el=document.getElementById('overviewEditor');if(!el||document.getElementById('cycleTopicEditor'))return;const values=topics();const block=document.createElement('div');block.id='cycleTopicEditor';block.innerHTML='<div class="overview-style-title">사이클 주제</div><p class="cycle-topic-help">각 사이클의 두 실험을 한 문장으로 묶어 적어 주세요.</p>'+['01','02','03'].map(c=>'<div class="field"><label>사이클 '+c+' 주제</label><input data-cycle-topic="'+c+'" value="'+esc(values[c]||'')+'"></div>').join('');const save=el.querySelector('#overviewSaveV3');if(save)el.insertAdjacentElement('beforebegin',block);else el.appendChild(block);block.querySelectorAll('[data-cycle-topic]').forEach(input=>input.oninput=()=>{topics()[input.dataset.cycleTopic]=input.value;apply()})};
   const tab=document.getElementById('overviewTab');if(tab){const previous=tab.onclick;tab.onclick=()=>{if(previous)previous();setTimeout(mount,0)}}
