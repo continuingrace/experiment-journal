@@ -112,3 +112,31 @@
   }
   init();
 })();
+
+(()=>{
+  if(typeof data==='undefined'||!Array.isArray(data.experiments)) return;
+  const n=String.fromCharCode(10);
+  const secondExperiment={
+    id:'exp-design-request-tracker',
+    num:'02',
+    kicker:'DESIGN OPS',
+    title:'슬랙 디자인 요청을 자동으로 관리하는 트래커 구축',
+    date:'2026-07-21',
+    summary:'슬랙으로 들어오는 디자인 요청을 Claude 기반 자동화 워크플로우로 연결해 접수 · 분류 · 누락 점검 · 기록 · 회고까지 자동 처리하는 디자인 요청 트래커를 구축했습니다.',
+    question:'슬랙으로 들어오는 디자인 요청을 자동으로 정리하고, 필요한 정보를 빠짐없이 확인하며, 완료 후 회고까지 연결할 수 있을까?',
+    tried:['트랙 B — 내 데이터 기반 반복 작업 자동화','Slack: 디자인 요청 수집 및 완료 감지','Notion: 트래커 DB 및 대시보드','Obsidian: 플레이북 · 요청 노트 · 회고 기록','Gmail: 브리핑 백업 알림'].join(n),
+    friction:'기존에는 요청 내용 분류, 사용처 · 규격 · 마감일 등 누락 자료 확인, Notion 트래커 등록, 마감 일정 관리, 완료 후 회고 기록을 수동으로 처리했습니다. 되묻기와 정리 시간이 반복되면서, 내가 어떤 지점에서 계속 불편함을 느끼는지 먼저 발견하는 일이 필요했습니다.',
+    applied:['Notion 트래커에 카테고리 · 요청자 · 상태 · 마감희망일 · 배정 스킬 · 누락 자료를 자동 기록했습니다.','배운 점 · 깨달은 점 · 만족한 점 · 아쉬운 점 · 도움 된 자료/소스 · 성과로 구성한 회고 6항목도 함께 축적했습니다.','미완료 작업, 마감 임박 작업(D-3), 카테고리별 누적 현황, 분기별 리뷰, 연간 리뷰를 확인하는 라이브 대시보드를 만들었습니다.','매일 오후 6시에 디자인-완료 이모지와 [디자인 최종 완료] 문구를 감지해 상태를 완료로 바꾸고, 회고가 없는 완료 건만 1회 알림하도록 했습니다.','웹툰 · 컷만화 · 카드뉴스 · insight-cowork · 일러스트 등 카테고리에 따라 기존 제작 스킬을 자동 연결했습니다.','Slack은 입력, Notion은 상태 저장, Obsidian은 규칙 · 플레이북 · 회고, Gmail은 백업 알림으로 역할을 분리했습니다.'].join(n),
+    learned:['반복 업무 자체보다 내가 어떤 지점에서 반복적으로 불편함을 느끼는지 인식하는 것이 더 중요했습니다.','Claude를 단순한 도구가 아니라 역할과 규칙을 명확히 정의한 협업자로 대할수록 결과 품질이 높아졌습니다.','Notion 트래커 구조와 tracker.md를 직접 설계하며 업무 기록과 회고까지 연결하는 운영 기반을 만들 수 있었습니다.','외부 저장소에 규칙과 기록을 축적하면 세션이 바뀌어도 같은 판단 기준으로 업무를 이어갈 수 있었습니다.'].join(n),
+    next:'디자인 요청 1건당 평균 내용 파악과 정리 시간을 약 5~10분 절감하고, 누락 자료 확인 항목을 표준화하며, 요청자와의 커뮤니케이션 반복 횟수를 줄이기.',
+    media:[],
+    coverId:null
+  };
+  if(!data.experiments.some(e=>e.id===secondExperiment.id)) data.experiments.splice(1,0,secondExperiment);
+  data.experiments.forEach((e,i)=>e.num=String(i+1).padStart(2,'0'));
+  if(typeof persist==='function') persist(true);
+  if(typeof render==='function') render();
+  const relabel=()=>document.querySelectorAll('.eyebrow').forEach(el=>{const next=el.textContent.replace(/^Experiment /,'사이클 실험 ');if(next!==el.textContent)el.textContent=next});
+  const sectionsEl=document.getElementById('sections');
+  if(sectionsEl){new MutationObserver(relabel).observe(sectionsEl,{childList:true,subtree:true});relabel()}
+})();
