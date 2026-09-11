@@ -140,3 +140,21 @@
   const sectionsEl=document.getElementById('sections');
   if(sectionsEl){new MutationObserver(relabel).observe(sectionsEl,{childList:true,subtree:true});relabel()}
 })();
+
+
+(()=>{
+  if(typeof data==='undefined'||!Array.isArray(data.experiments)) return;
+  const assignCycles=()=>data.experiments.forEach((e,i)=>e.cycle=String(Math.floor(i/2)+1).padStart(2,'0'));
+  const relabel=()=>document.querySelectorAll('#sections .eyebrow').forEach(el=>{
+    const section=el.closest('.section');
+    const item=section&&data.experiments.find(e=>e.id===section.id);
+    if(!item)return;
+    const next='사이클 실험 '+(item.cycle||'01')+' · '+item.kicker;
+    if(el.textContent!==next)el.textContent=next;
+  });
+  assignCycles();
+  if(typeof persist==='function')persist(true);
+  if(typeof render==='function')render();
+  const sectionsEl=document.getElementById('sections');
+  if(sectionsEl){new MutationObserver(relabel).observe(sectionsEl,{childList:true,subtree:true});relabel()}
+})();
