@@ -1,0 +1,8 @@
+/* v0.3.22 — retain editing access and readable cards on tablet */
+@media (min-width:761px) and (max-width:1180px){
+  .main{padding-bottom:148px}
+  .stories{grid-template-columns:1fr;gap:16px}
+  .mobilebar{position:fixed;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));left:var(--page-gutter);right:var(--page-gutter);bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;background:rgba(251,249,244,.96);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:20px;padding:6px;gap:2px;box-shadow:var(--shadow)}
+  .mobilebar button{min-width:0;min-height:44px;border:0;background:transparent;padding:8px 4px;font-size:14px;line-height:20px;color:var(--muted);font-weight:700;letter-spacing:0;white-space:nowrap}
+  .mobilebar button:hover,.mobilebar button:focus-visible{color:var(--accent);background:#ebe8df;border-radius:12px}
+}
