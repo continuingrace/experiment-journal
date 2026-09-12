@@ -20,22 +20,14 @@
   };
 
   let inserted=false;
-  if(!data.experiments.some(e=>e.id==='exp0')){
+  if(data.experiments.length===0&&!data.experiments.some(e=>e.id==='exp0')){
     data.experiments.unshift(firstExperiment);
     active='exp0';
     inserted=true;
   }
 
-  const canonical={
-    exp0:{kicker:'WORKFLOW',title:'키워드 하나로 HR 인사이트 워크플로우 설계',date:'2026-07-14'},
-    exp1:{kicker:'CONSISTENCY',title:'감정을 캐릭터로 만들며, 일관성을 설계'},
-    exp2:{kicker:'IDENTITY',title:'나만의 캐릭터 IHIRI, 일상의 언어'},
-    exp3:{kicker:'SYSTEM',title:'Zotero MCP로 논문·PDF 리서치 흐름 설계'}
-  };
-
   data.experiments.forEach((e,i)=>{
     e.num=String(i+1).padStart(2,'0');
-    if(canonical[e.id]) Object.assign(e,canonical[e.id]);
   });
 
   if(inserted||data.activeId!==active){
@@ -67,7 +59,6 @@
   const ensure=()=>{
     data.overview=data.overview||{};
     data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});
-    if(['스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기','스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기'].includes(data.overview.cycleTopics['01']))data.overview.cycleTopics['01']=defaults['01'];
     return data.overview.cycleTopics;
   };
   const topics=()=>ensure();
@@ -182,7 +173,7 @@
     media:[],
     coverId:null
   };
-  if(!data.experiments.some(e=>e.id===secondExperiment.id)) data.experiments.splice(1,0,secondExperiment);
+  if(data.experiments.length===0&&!data.experiments.some(e=>e.id===secondExperiment.id)) data.experiments.splice(1,0,secondExperiment);
   data.experiments.forEach((e,i)=>e.num=String(i+1).padStart(2,'0'));
   if(typeof persist==='function') persist(true);
   if(typeof render==='function') render();
@@ -221,12 +212,10 @@
   };
   const state=data.overview||{};
   state.style=Object.assign({},defaults.style,state.style||{});
-  if(state.overviewVersion!=='2'){
-    state.changedTitle=defaults.changedTitle;
-    state.changedLead=defaults.changedLead;
-    state.changedBody=defaults.changedBody;
-    state.overviewVersion='2';
-  }
+  if(!state.changedTitle)state.changedTitle=defaults.changedTitle;
+  if(!state.changedLead)state.changedLead=defaults.changedLead;
+  if(!state.changedBody)state.changedBody=defaults.changedBody;
+  if(!state.overviewVersion)state.overviewVersion='2';
   data.overview=state;
   localStorage.setItem(OVERVIEW_KEY,JSON.stringify(state));
   const text=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value||''};
@@ -343,7 +332,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.32';
+  const RELEASE_VERSION='0.3.33';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -435,7 +424,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.32';
+  const EJ_VERSION='0.3.33';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
