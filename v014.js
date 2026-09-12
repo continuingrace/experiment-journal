@@ -332,7 +332,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.37';
+  const RELEASE_VERSION='0.3.38';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -403,7 +403,8 @@
         if(!path){
           const blob=await (await fetch(source)).blob();
           const type=media.type==='video'||blob.type.startsWith('video/')?'video':'image';
-          path='media/'+type+'-'+String(++index).padStart(2,'0')+mediaExtension(media,blob);
+          const assetId=String(media.id||(++index)).replace(/[^a-zA-Z0-9_-]/g,'');
+          path='media/'+type+'-'+assetId+mediaExtension(media,blob);
           seen.set(source,path);uploads.push({path,blob});
         }
         media.src=path;delete media.url;delete media.data;delete media.dataUrl;delete media.objectUrl;delete media.key;
@@ -458,7 +459,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.37';
+  const EJ_VERSION='0.3.38';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
