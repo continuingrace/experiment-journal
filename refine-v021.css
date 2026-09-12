@@ -1,0 +1,13 @@
+/* v0.3.21 — prevent experiment cards from expanding past mobile viewport */
+@media (max-width:760px){
+  #sections,
+  #sections .cycle-group,
+  #sections .section,
+  #sections .card,
+  #sections .body,
+  #sections .stories,
+  #sections .story{min-width:0;max-width:100%}
+
+  #sections .story p,
+  #sections .lead{overflow-wrap:anywhere;word-break:normal}
+}
