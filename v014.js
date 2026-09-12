@@ -343,7 +343,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.26';
+  const RELEASE_VERSION='0.3.28';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -383,7 +383,7 @@
     const info=snapshot.data||{};const overview=info.overview||{};const experiments=Array.isArray(info.experiments)?info.experiments:[];let groups='';
     for(let i=0;i<experiments.length;i+=2){
       const cycle=pad(Math.floor(i/2)+1);const topic=(overview.cycleTopics||{})[cycle]||'';const pair=experiments.slice(i,i+2);let cards='';
-      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">실험 '+Number(item.num||i+index+1)+'. '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div>'+(item.context?'<div><dt>문제 상황</dt><dd>'+htmlText(item.context)+'</dd></div>':'')+'<div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
+      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">실험 '+Number(item.num||i+index+1)+'. '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div><div><dt>문제 상황</dt><dd>'+htmlText(item.context||'')+'</dd></div><div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
       groups+='<section class="cycle"><header><strong>[사이클 '+Number(cycle)+']'+(topic?' '+htmlText(topic):'')+'</strong></header><div class="pair">'+cards+'</div></section>';
     }
     return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>허들링클럽 1기 AI Experiment Archive · 2026</title><link rel="stylesheet" href="styles.css"></head><body><main><p class="archive">허들링클럽 1기 AI Experiment Archive · 2026</p><section class="hero"><p class="label">Riding the Wave.</p><h1>'+htmlText(overview.hero||'')+'</h1></section><section class="changed"><p class="eyebrow">'+htmlText(overview.changedTitle||'실험을 하며 달라진 점')+'</p><h2>'+htmlText(overview.changedLead||'')+'</h2><p>'+htmlText(overview.changedBody||'')+'</p></section>'+groups+'<section class="principle"><p class="eyebrow">'+htmlText(overview.principleLabel||'나만의 기준')+'</p><h2>'+htmlText(overview.principle||'')+'</h2></section><footer>저장일시 · '+htmlEsc(snapshot.savedAt)+' · '+htmlEsc(snapshot.version)+'</footer></main></body></html>';
@@ -419,7 +419,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.26';
+  const EJ_VERSION='0.3.28';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
