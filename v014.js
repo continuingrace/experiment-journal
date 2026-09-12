@@ -332,7 +332,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.34';
+  const RELEASE_VERSION='0.3.35';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -380,6 +380,33 @@
   }
   function buildReleaseCss(){return ':root{color-scheme:light;--bg:#f5f2ea;--panel:#fbf9f4;--ink:#20231f;--muted:#787b73;--line:#d8d4c9;--accent:#30483b;--shadow:0 8px 24px rgba(30,35,30,.06);--content:1120px;--reading:760px;--gutter:clamp(24px,4vw,64px)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Pretendard,"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.01em;word-break:keep-all;overflow-wrap:break-word}.public-top{position:sticky;top:0;z-index:10;min-height:64px;padding:0 var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);background:rgba(245,242,234,.94);backdrop-filter:blur(18px)}.brand{display:flex;align-items:center;gap:12px;font-size:16px;line-height:24px;font-weight:750;letter-spacing:-.01em}.mark{width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--ink);border-radius:50%;font-size:12px;line-height:16px}.read-only{font-size:13px;line-height:20px;color:var(--muted);font-weight:600}main{width:min(100%,var(--content));margin:0 auto;padding:56px var(--gutter) 112px}.eyebrow,.story-label{font-size:13px;line-height:20px;color:var(--muted);letter-spacing:.05em;font-weight:700}.hero{padding:48px 0 64px}.hero h1{margin:24px 0 32px;font-size:clamp(56px,6vw,80px);line-height:1.08;letter-spacing:-.035em}.hero p{max-width:var(--reading);margin:0;color:#4c5048;font-size:20px;line-height:1.72;white-space:pre-line}.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;padding:40px 0 56px}.step{min-width:0;border-top:2px solid var(--ink);padding-top:16px}.step small{display:block;color:var(--muted);font-size:13px;line-height:20px}.step strong{display:block;margin:4px 0 8px;font-size:19px;line-height:28px;letter-spacing:0}.step span{display:block;color:var(--muted);font-size:15px;line-height:24px}.cycle{padding:64px 0}.cycle>header{margin-bottom:32px}.cycle>header strong{font-size:20px;line-height:28px;letter-spacing:.04em}.pair{display:grid;grid-template-columns:1fr;gap:56px}.experiment{min-width:0}.experiment-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}.experiment-head h2{max-width:900px;margin:12px 0 0;font-size:clamp(30px,3.2vw,44px);line-height:1.22;letter-spacing:-.024em}.experiment-head time{flex:0 0 auto;color:var(--muted);font-size:14px;line-height:20px;letter-spacing:.02em}.card{overflow:hidden;border:1px solid var(--line);border-radius:24px;background:var(--panel);box-shadow:var(--shadow)}.cover{position:relative;aspect-ratio:16/8.5;overflow:hidden;background:#eae6dd}.cover img,.cover video{width:100%;height:100%;object-fit:cover}.badge{position:absolute;top:20px;left:20px;min-height:32px;padding:6px 12px;border-radius:999px;background:rgba(251,249,244,.94);font-size:12px;line-height:20px;font-weight:750;letter-spacing:.02em}.body{padding:32px}.lead{max-width:var(--reading);margin:0;color:#4b4f47;font-size:17px;line-height:1.78;white-space:pre-line}.stories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:32px}.story{border:1px solid var(--line);border-radius:16px;background:#fff;padding:24px}.story-label{margin-bottom:12px}.story p{margin:0;font-size:16px;line-height:1.75;white-space:pre-line}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px;margin-top:32px}.gallery figure{margin:0;overflow:hidden;border-radius:16px;background:#e6e3dc}.gallery img,.gallery video{display:block;width:100%;max-height:520px;object-fit:cover}.gallery figcaption{padding:10px 12px;color:var(--muted);font-size:13px;line-height:20px}.overview-block{padding:80px 0}.overview-block h2{max-width:960px;margin:20px 0 24px;font-size:clamp(36px,4.2vw,56px);line-height:1.28;letter-spacing:-.022em;white-space:pre-line}.overview-block>p{max-width:var(--reading);margin:0;color:var(--muted);font-size:17px;line-height:1.78;white-space:pre-line}.principle{padding-top:0}footer{padding-top:32px;color:var(--muted);font-size:13px;line-height:20px}@media(max-width:760px){.public-top{min-height:72px;padding:0 20px}.read-only{font-size:12px}main{padding:32px 20px 64px}.hero{padding:32px 0 48px}.hero h1{margin:20px 0 28px;font-size:clamp(48px,14vw,58px);line-height:1.12;letter-spacing:-.028em}.hero p{font-size:16px;line-height:1.75}.timeline{grid-template-columns:1fr;gap:24px;padding:32px 0 48px}.step{display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:12px}.step small{grid-row:1/3;font-size:15px;line-height:22px}.step strong{margin:0 0 6px;font-size:20px;line-height:28px}.cycle{padding:56px 0}.cycle>header{margin-bottom:28px}.cycle>header strong{font-size:18px;line-height:26px}.pair{grid-template-columns:1fr;gap:48px}.experiment-head{position:relative;display:block;margin-bottom:28px}.experiment-head .eyebrow{padding-right:96px;margin-bottom:14px}.experiment-head h2{font-size:clamp(32px,9vw,38px);line-height:1.28}.experiment-head time{position:absolute;top:0;right:0;font-size:13px;line-height:20px}.card{border-radius:20px}.body{padding:24px 20px 28px}.lead,.story p{font-size:16px;line-height:1.78}.stories{grid-template-columns:1fr}.story{padding:20px}.overview-block{padding:56px 0}.overview-block h2{font-size:clamp(36px,10vw,42px);line-height:1.32}.overview-block>p{font-size:16px;line-height:1.8}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}'}
   const utf8Base64=(value)=>btoa(unescape(encodeURIComponent(value)));
+  const blobBase64=async(blob)=>String(await blobToDataUrl(blob)).split(',')[1]||'';
+  const mediaExtension=(media,blob)=>{
+    const name=String(media&&media.label||'').match(/\.([a-z0-9]{1,8})$/i);
+    if(name)return '.'+name[1].toLowerCase();
+    const mime=String(blob&&blob.type||'').toLowerCase();
+    const known={'image/jpeg':'.jpg','image/jpg':'.jpg','image/png':'.png','image/gif':'.gif','image/webp':'.webp','image/avif':'.avif','video/mp4':'.mp4','video/webm':'.webm','video/quicktime':'.mov'};
+    return known[mime]||((media&&media.type)==='video'?'.mp4':'.jpg');
+  };
+  async function preparePublicSnapshot(snapshot){
+    const published=clone(snapshot);const uploads=[];const seen=new Map();let index=0;
+    for(const item of published.data.experiments||[]){
+      if(!Array.isArray(item.media))continue;
+      for(const media of item.media){
+        const source=media&&(media.src||media.url||media.data||media.dataUrl||'');
+        if(!String(source).startsWith('data:'))continue;
+        let path=seen.get(source);
+        if(!path){
+          const blob=await (await fetch(source)).blob();
+          const type=media.type==='video'||blob.type.startsWith('video/')?'video':'image';
+          path='media/'+type+'-'+String(++index).padStart(2,'0')+mediaExtension(media,blob);
+          seen.set(source,path);uploads.push({path,blob});
+        }
+        media.src=path;delete media.url;delete media.data;delete media.dataUrl;delete media.objectUrl;delete media.key;
+      }
+    }
+    return {snapshot:published,uploads};
+  }
   async function github(path,options,token){
     const response=await fetch('https://api.github.com'+path,Object.assign({headers:{Accept:'application/vnd.github+json','Content-Type':'application/json','Authorization':'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28'}},options||{}));
     const body=await response.json();if(!response.ok)throw new Error(body.message||('GitHub API '+response.status));return body;
@@ -396,6 +423,7 @@
     if(/Bad credentials|401/i.test(message))return 'GitHub 토큰을 확인해 주세요. 토큰은 이번 발행에만 사용되며 저장되지 않습니다.';
     if(/403|Resource not accessible|Must have admin rights/i.test(message))return 'GitHub 토큰에 experiment-journal-public 저장소의 Contents: Read and write 권한이 있는지 확인해 주세요.';
     if(/404|Not Found/i.test(message))return '공개 저장소 이름 또는 접근 권한을 확인해 주세요.';
+    if(/too large|large to process|413/i.test(message))return '미디어 파일 하나의 크기가 GitHub 발행 한도를 넘었습니다. 해당 영상 또는 이미지를 더 작은 파일로 바꾼 뒤 다시 발행해 주세요.';
     return '발행에 실패했습니다: '+(message||'알 수 없는 오류');
   }
   async function publishVersion(){
@@ -407,12 +435,13 @@
     const token=window.prompt('GitHub Fine-grained 토큰을 입력하세요.\nContents: Read and write 권한이 필요하며 토큰은 저장하지 않습니다.');if(!token){showPublishMessage('발행 설정이 필요합니다.','보안을 위해 GitHub 토큰 없이 웹페이지를 발행할 수 없습니다. 토큰은 저장되지 않습니다.');return}
     try{
       notify('웹페이지 발행을 준비하고 있습니다.');
-      const date=new Date(snapshot.savedAt);const folder='releases/'+date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate())+'/'+pad(date.getHours())+pad(date.getMinutes())+'-v'+snapshot.version;
-      const html=buildReleaseHtml(snapshot);const css=buildReleaseCss();const releaseJson=JSON.stringify(snapshot,null,2);const readme='# Experiment Journal Public Archive\\n\\n가장 최근에 발행한 읽기 전용 완성본입니다.\\n';
-      const files=[{path:'index.html',content:html},{path:'styles.css',content:css},{path:'release.json',content:releaseJson},{path:'README.md',content:readme},{path:folder+'/index.html',content:html},{path:folder+'/styles.css',content:css},{path:folder+'/release.json',content:releaseJson},{path:folder+'/README.md',content:'# '+folder+'\\n\\n완성본 저장 후 웹페이지로 발행한 정적 아카이브입니다.\\n'}];
+      const publication=await preparePublicSnapshot(snapshot);const publicSnapshot=publication.snapshot;
+      const html=buildReleaseHtml(publicSnapshot);const css=buildReleaseCss();const releaseJson=JSON.stringify(publicSnapshot,null,2);const readme='# Experiment Journal Public Archive\\n\\n가장 최근에 발행한 읽기 전용 완성본입니다.\\n';
+      const files=[{path:'index.html',content:html},{path:'styles.css',content:css},{path:'release.json',content:releaseJson},{path:'README.md',content:readme}];
       const ref=await github('/repos/'+owner+'/'+repo+'/git/ref/heads/main',{method:'GET'},token);const parent=ref.object.sha;const commit=await github('/repos/'+owner+'/'+repo+'/git/commits/'+parent,{method:'GET'},token);const blobs=[];
       for(const file of files){const blob=await github('/repos/'+owner+'/'+repo+'/git/blobs',{method:'POST',body:JSON.stringify({content:utf8Base64(file.content),encoding:'base64'})},token);blobs.push({path:file.path,mode:'100644',type:'blob',sha:blob.sha})}
-      const tree=await github('/repos/'+owner+'/'+repo+'/git/trees',{method:'POST',body:JSON.stringify({base_tree:commit.tree.sha,tree:blobs})},token);const created=await github('/repos/'+owner+'/'+repo+'/git/commits',{method:'POST',body:JSON.stringify({message:'publish: '+folder,tree:tree.sha,parents:[parent]})},token);await github('/repos/'+owner+'/'+repo+'/git/refs/heads/main',{method:'PATCH',body:JSON.stringify({sha:created.sha,force:false})},token);
+      for(let i=0;i<publication.uploads.length;i++){const file=publication.uploads[i];notify('미디어를 발행하고 있습니다. ('+(i+1)+'/'+publication.uploads.length+')');const blob=await github('/repos/'+owner+'/'+repo+'/git/blobs',{method:'POST',body:JSON.stringify({content:await blobBase64(file.blob),encoding:'base64'})},token);blobs.push({path:file.path,mode:'100644',type:'blob',sha:blob.sha})}
+      const tree=await github('/repos/'+owner+'/'+repo+'/git/trees',{method:'POST',body:JSON.stringify({base_tree:commit.tree.sha,tree:blobs})},token);const created=await github('/repos/'+owner+'/'+repo+'/git/commits',{method:'POST',body:JSON.stringify({message:'publish: v'+publicSnapshot.version,tree:tree.sha,parents:[parent]})},token);await github('/repos/'+owner+'/'+repo+'/git/refs/heads/main',{method:'PATCH',body:JSON.stringify({sha:created.sha,force:false})},token);
       localStorage.setItem(CONFIG_KEY,JSON.stringify({owner,repo}));const url='https://'+owner+'.github.io/'+repo+'/';notify('웹페이지 발행이 완료되었습니다.');showPublishMessage('웹페이지 발행 완료', '최신 완성본이 읽기 전용 공개 주소에 반영되었습니다.',url);
     }catch(error){console.error(error);showPublishMessage('웹페이지 발행 실패',publishErrorMessage(error))}
   }
@@ -424,7 +453,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.34';
+  const EJ_VERSION='0.3.35';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
