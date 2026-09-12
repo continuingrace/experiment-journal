@@ -1,0 +1,11 @@
+/* v0.3.24 — simplify navigation markers and mobile label rhythm */
+@media (min-width:761px){
+  .nav button.active::before{display:none}
+}
+
+.hero{border-bottom:0}
+
+@media (max-width:760px){
+  .mobilebar{display:flex;align-items:center;justify-content:center;gap:clamp(16px,5vw,24px)}
+  .mobilebar button{flex:0 0 auto}
+}
