@@ -1,0 +1,10 @@
+/* v0.3.20 — mobile navigation label fit */
+@media (max-width:760px){
+  .mobilebar{left:16px;right:16px;padding:6px;gap:2px}
+  .mobilebar button{min-width:0;padding:8px 2px;font-size:13px;line-height:20px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:clip}
+}
+
+@media (max-width:360px){
+  .mobilebar button:nth-child(2){font-size:0;letter-spacing:0}
+  .mobilebar button:nth-child(2)::after{content:"Exper.";font-size:13px;line-height:20px}
+}
