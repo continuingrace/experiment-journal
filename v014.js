@@ -9,6 +9,7 @@
     date:'2026-07-14',
     summary:'HR·리더십 키워드 하나를 입력하면 전략 인사이트 문서 → Slack Canvas 반영 → 지정 채널 알림 → 대화편지체 뉴스레터 초안 → 이미지·컬러·해시태그까지 이어지는 Claude Skill 워크플로우를 만들었습니다.',
     question:'반복되는 해외 매체 리서치·구조화·Slack 공유·뉴스레터 제안을 하나의 재사용 가능한 스킬로 고정하면, 결과 편차를 줄이고 다른 팀원에게도 같은 품질로 이관할 수 있을까?',
+    context:'',
     tried:'• 실제 키워드 Radical Integrity로 처음부터 끝까지 실전 테스트\n• HBR·Gallup·McKinsey·Russell Reynolds 등 실제 아티클과 검증된 통계만 수집\n• 강조 부호 제거, 통계 옆 출처 하이퍼링크, 검색결과 URL 금지 등 작성 규칙 고정\n• 최신 항목이 Slack Canvas 맨 위에 쌓이도록 반영하고 승인 후 채널 알림 발송\n• HR·중간관리자·리더 대상 대화편지체 뉴스레터 + Unsplash 이미지 3·컬러 3·해시태그 3 생성\n• CANVAS_ID·NOTIFY_CHANNEL·ORG_NAME·SIGNATURE 등 개인·조직 값을 설정 파라미터로 분리하고 insight-cowork SKILL.md로 문서화·패키징',
     friction:'문서에 적힌 도구 동작과 실제 Slack Canvas 동작이 달랐고, 검색결과 페이지 URL은 문단의 근거로 쓰기에 부정확했습니다. 캔버스 ID·채널·발신 명의를 하드코딩하면 보안과 재사용성도 떨어졌습니다.',
     applied:'Canvas 반영 전 현재 section_id를 읽고 실행 후 다시 검증하는 절차를 넣었습니다. 검색결과가 아니라 문단 주장과 가장 맞는 특정 아티클을 인라인 출처로 배치했고, 개인·조직 값은 설정값으로 분리했습니다. 캔버스 반영과 알림은 반드시 초안 승인 뒤 실행하도록 규칙화했습니다.',
@@ -342,7 +343,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.19';
+  const RELEASE_VERSION='0.3.26';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -382,7 +383,7 @@
     const info=snapshot.data||{};const overview=info.overview||{};const experiments=Array.isArray(info.experiments)?info.experiments:[];let groups='';
     for(let i=0;i<experiments.length;i+=2){
       const cycle=pad(Math.floor(i/2)+1);const topic=(overview.cycleTopics||{})[cycle]||'';const pair=experiments.slice(i,i+2);let cards='';
-      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">실험 '+Number(item.num||i+index+1)+'. '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div><div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
+      pair.forEach((item,index)=>{cards+='<article class="experiment"><div class="eyebrow">실험 '+Number(item.num||i+index+1)+'. '+htmlText(item.kicker||('실험 '+(i+index+1)))+'</div><h2>'+htmlText(item.title||'')+'</h2><p class="date">'+htmlEsc(item.date||'')+'</p><div class="media">'+mediaMarkup(item)+'</div><dl><div><dt>한 줄 요약</dt><dd>'+htmlText(item.summary||'')+'</dd></div><div><dt>질문</dt><dd>'+htmlText(item.question||'')+'</dd></div>'+(item.context?'<div><dt>문제 상황</dt><dd>'+htmlText(item.context)+'</dd></div>':'')+'<div><dt>시도</dt><dd>'+htmlText(item.tried||'')+'</dd></div><div><dt>막힌 지점</dt><dd>'+htmlText(item.friction||'')+'</dd></div><div><dt>바꾼 점</dt><dd>'+htmlText(item.applied||'')+'</dd></div><div><dt>배운 점</dt><dd>'+htmlText(item.learned||'')+'</dd></div><div><dt>다음 실험</dt><dd>'+htmlText(item.next||'')+'</dd></div></dl></article>'});
       groups+='<section class="cycle"><header><strong>[사이클 '+Number(cycle)+']'+(topic?' '+htmlText(topic):'')+'</strong></header><div class="pair">'+cards+'</div></section>';
     }
     return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>허들링클럽 1기 AI Experiment Archive · 2026</title><link rel="stylesheet" href="styles.css"></head><body><main><p class="archive">허들링클럽 1기 AI Experiment Archive · 2026</p><section class="hero"><p class="label">Riding the Wave.</p><h1>'+htmlText(overview.hero||'')+'</h1></section><section class="changed"><p class="eyebrow">'+htmlText(overview.changedTitle||'실험을 하며 달라진 점')+'</p><h2>'+htmlText(overview.changedLead||'')+'</h2><p>'+htmlText(overview.changedBody||'')+'</p></section>'+groups+'<section class="principle"><p class="eyebrow">'+htmlText(overview.principleLabel||'나만의 기준')+'</p><h2>'+htmlText(overview.principle||'')+'</h2></section><footer>저장일시 · '+htmlEsc(snapshot.savedAt)+' · '+htmlEsc(snapshot.version)+'</footer></main></body></html>';
@@ -418,7 +419,7 @@
   mountReleaseActions();
 })();
 (()=>{
-  const EJ_VERSION='0.3.19';
+  const EJ_VERSION='0.3.26';
   const fontLink=document.createElement('link');
   if(!document.querySelector('link[data-ej-pretendard]')){fontLink.rel='stylesheet';fontLink.href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css';fontLink.dataset.ejPretendard='1';document.head.appendChild(fontLink)}
   if(typeof data==='undefined'||!data.overview)return;
@@ -505,6 +506,6 @@
 
 (()=>{
   const style=document.createElement('style');
-  style.textContent='#sections .story>label::after{display:inline-block;margin-left:6px;color:#9aa3a8;font-size:.82em;font-weight:400;letter-spacing:0;text-transform:none}#sections .story:nth-child(1)>label::after{content:"질문"}#sections .story:nth-child(2)>label::after{content:"시도"}#sections .story:nth-child(3)>label::after{content:"막힌 지점"}#sections .story:nth-child(4)>label::after{content:"바꾼 점"}#sections .story:nth-child(5)>label::after{content:"배운 점"}#sections .story:nth-child(6)>label::after{content:"다음 실험"}';
+  style.textContent='#sections .story>label::after{display:inline-block;margin-left:6px;color:#9aa3a8;font-size:.82em;font-weight:400;letter-spacing:0;text-transform:none}#sections .story--question>label::after{content:"질문"}#sections .story--context>label::after{content:"문제 상황"}#sections .story--try>label::after{content:"시도"}#sections .story--friction>label::after{content:"막힌 지점"}#sections .story--change>label::after{content:"바꾼 점"}#sections .story--learned>label::after{content:"배운 점"}#sections .story--next>label::after{content:"다음 실험"}';
   document.head.appendChild(style);
 })();
