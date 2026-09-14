@@ -50,9 +50,9 @@ async function syncPublishedVersion(){
       media.objectUrl=await url(media.key);
       delete media.src;delete media.url;delete media.data;delete media.dataUrl;
     }
-    data=incoming;normalizeExperiments();active=data.activeId||data.experiments[0]?.id||'exp1';persist(true);render();
-    document.getElementById('modal')?.classList.remove('show');
-    toast('최신 공개본과 사진을 동기화했습니다.');
+    data=incoming;normalizeExperiments();active=data.activeId||data.experiments[0]?.id||'exp1';persist(true);
+    window.alert('최신 공개본과 사진을 동기화했습니다. 화면을 새로고침합니다.');
+    window.location.reload();
   }catch(error){console.error(error);alert('공개본 동기화에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요. 기존 편집 내용은 유지됩니다.');}
 }window.syncPublishedVersion=syncPublishedVersion;
 async function addFiles(list){const e=exp();for(const f of list){const key=await put(f),m={id:'m_'+Date.now()+Math.random().toString(36).slice(2,6),key,type:f.type.startsWith('video/')?'video':'image',label:f.name};m.objectUrl=await url(key);e.media.push(m);if(!e.coverId)e.coverId=m.id}persist();sections();manager();if(document.getElementById('mManager'))manager('mManager')}
