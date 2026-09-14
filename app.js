@@ -27,10 +27,34 @@ function toast(t){const el=document.getElementById('toast');el.textContent=t;el.
 function modal(h){document.getElementById('modalCard').innerHTML=h;document.getElementById('modal').classList.add('show')}document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('show')};
 function pickExp(){modal(`<h3>Experiments</h3><p>열 실험을 선택하세요.</p>${data.experiments.map(e=>`<button class="btn" style="margin:4px" onclick="document.getElementById('modal').classList.remove('show');selectExp('${e.id}')">${e.num} · ${esc(e.kicker)}</button>`).join('')}`)}window.pickExp=pickExp;
 function mobileEdit(){modal(`<h3>Quick Write</h3><p>실험 내용을 수정하고 이미지·영상을 추가할 수 있습니다.</p><div id="mEditor"></div><div class="upload"><button class="btn" onclick="document.getElementById('mobileMedia').click()">이미지·영상 선택</button></div><div id="mManager"></div><button class="btn primary" style="width:100%;margin-top:16px" onclick="persist();document.getElementById('modal').classList.remove('show')">저장</button>`);editor('mEditor','mManager')}window.mobileEdit=mobileEdit;
-function tools(){modal(`<h3>Tools</h3><p>기기 간 데이터 이동과 소개 문구를 관리합니다.</p><button class="btn" onclick="backup()">JSON 백업</button> <button class="btn" onclick="document.getElementById('jsonInput').click()">JSON 불러오기</button><button class="btn" style="margin-top:10px" onclick="mobileOverviewEdit()">소개·하단 문구 편집</button>`)}window.tools=tools;
+function tools(){modal(`<h3>Tools</h3><p>기기 간 데이터 이동과 소개 문구를 관리합니다.</p><button class="btn primary" style="width:100%;margin-bottom:10px" onclick="syncPublishedVersion()">공개본 동기화</button><button class="btn" onclick="backup()">JSON 백업</button> <button class="btn" onclick="document.getElementById('jsonInput').click()">JSON 불러오기</button><button class="btn" style="margin-top:10px" onclick="mobileOverviewEdit()">소개·하단 문구 편집</button>`)}window.tools=tools;
 async function fileAsDataUrl(source){if(!source)return '';if(String(source).startsWith('data:'))return source;const response=await fetch(source);if(!response.ok)throw new Error('미디어 파일을 읽을 수 없습니다.');const blob=await response.blob();return await new Promise((ok,no)=>{const reader=new FileReader();reader.onload=()=>ok(reader.result);reader.onerror=no;reader.readAsDataURL(blob)})}
 async function backup(){try{const copy=structuredClone(data);for(const e of copy.experiments||[])for(const m of e.media||[]){const original=(data.experiments||[]).find(item=>item.id===e.id)?.media?.find(item=>item.id===m.id);const source=original?.objectUrl||m.objectUrl||m.src||(m.key?await url(m.key):'');if(source)m.dataUrl=await fileAsDataUrl(source);delete m.key;delete m.objectUrl;delete m.src}const payload={format:'experiment-journal-backup-v2',exportedAt:new Date().toISOString(),data:copy};const a=document.createElement('a'),href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));a.href=href;a.download='experiment-journal-backup-with-media.json';a.click();setTimeout(()=>URL.revokeObjectURL(href),1000);toast('이미지를 포함한 백업 파일을 만들었습니다.')}catch(error){console.error(error);alert('이미지를 포함한 백업을 만들지 못했습니다. 원본 기기에서 다시 시도해 주세요.')}}document.getElementById('backupBtn').onclick=backup;document.getElementById('restoreBtn').onclick=()=>document.getElementById('jsonInput').click();
 function db(){return new Promise((ok,no)=>{const r=indexedDB.open(DB,2);r.onupgradeneeded=()=>{const database=r.result;if(!database.objectStoreNames.contains(STORE))database.createObjectStore(STORE);if(!database.objectStoreNames.contains(SNAPSHOT_STORE))database.createObjectStore(SNAPSHOT_STORE)};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}async function put(file){const d=await db(),k='m_'+Date.now()+'_'+Math.random().toString(36).slice(2);await new Promise((ok,no)=>{const t=d.transaction(STORE,'readwrite');t.objectStore(STORE).put(file,k);t.oncomplete=ok;t.onerror=()=>no(t.error)});return k}async function url(k){const d=await db(),b=await new Promise((ok,no)=>{const r=d.transaction(STORE).objectStore(STORE).get(k);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});return b?URL.createObjectURL(b):''}
+async function syncPublishedVersion(){
+  if(!window.confirm('이 기기의 현재 편집 내용을 최신 공개본으로 교체합니다. 필요한 내용은 먼저 JSON 백업해 주세요. 계속할까요?'))return;
+  const publicBase='https://continuingrace.github.io/experiment-journal-public/';
+  try{
+    toast('최신 공개본을 불러오고 있습니다.');
+    const response=await fetch(publicBase+'release.json?sync='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw new Error('공개본 데이터를 불러올 수 없습니다.');
+    const snapshot=await response.json();
+    if(!snapshot?.data||!Array.isArray(snapshot.data.experiments))throw new Error('공개본 데이터 형식이 올바르지 않습니다.');
+    const incoming=structuredClone(snapshot.data);
+    for(const experiment of incoming.experiments)for(const media of experiment.media||[]){
+      const source=media.src||media.url||media.dataUrl||'';
+      if(!source)continue;
+      const mediaResponse=await fetch(new URL(source,publicBase).href,{cache:'no-store'});
+      if(!mediaResponse.ok)throw new Error('공개본 미디어를 불러올 수 없습니다.');
+      media.key=await put(await mediaResponse.blob());
+      media.objectUrl=await url(media.key);
+      delete media.src;delete media.url;delete media.data;delete media.dataUrl;
+    }
+    data=incoming;normalizeExperiments();active=data.activeId||data.experiments[0]?.id||'exp1';persist(true);render();
+    document.getElementById('modal')?.classList.remove('show');
+    toast('최신 공개본과 사진을 동기화했습니다.');
+  }catch(error){console.error(error);alert('공개본 동기화에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요. 기존 편집 내용은 유지됩니다.');}
+}window.syncPublishedVersion=syncPublishedVersion;
 async function addFiles(list){const e=exp();for(const f of list){const key=await put(f),m={id:'m_'+Date.now()+Math.random().toString(36).slice(2,6),key,type:f.type.startsWith('video/')?'video':'image',label:f.name};m.objectUrl=await url(key);e.media.push(m);if(!e.coverId)e.coverId=m.id}persist();sections();manager();if(document.getElementById('mManager'))manager('mManager')}
 document.getElementById('mediaInput').onchange=async e=>{await addFiles(e.target.files);e.target.value=''};document.getElementById('mobileMedia').onchange=async e=>{await addFiles(e.target.files);e.target.value=''};
 async function restoreEmbeddedMedia(){for(const e of data.experiments||[])for(const m of e.media||[]){const source=m.dataUrl||(String(m.src||'').startsWith('data:')?m.src:'');if(!source)continue;const response=await fetch(source);if(!response.ok)throw new Error('백업 미디어를 읽을 수 없습니다.');m.key=await put(await response.blob());m.objectUrl=await url(m.key);delete m.dataUrl;delete m.src}}
