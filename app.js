@@ -45,11 +45,8 @@ async function syncPublishedVersion(recoverMissingMedia=false){
     for(const experiment of incoming.experiments)for(const media of experiment.media||[]){
       const source=media.src||media.url||media.dataUrl||'';
       if(!source)continue;
-      const mediaResponse=await fetch(new URL(source,publicBase).href,{cache:'no-store'});
-      if(!mediaResponse.ok)throw new Error('공개본 미디어를 불러올 수 없습니다.');
-      media.key=await put(await mediaResponse.blob());
-      media.objectUrl=await url(media.key);
-      delete media.src;delete media.url;delete media.data;delete media.dataUrl;
+      media.src=new URL(source,publicBase).href;
+      delete media.key;delete media.objectUrl;delete media.url;delete media.data;delete media.dataUrl;
     }
     data=incoming;normalizeExperiments();active=data.activeId||data.experiments[0]?.id||'exp1';persist(true);
     sessionStorage.removeItem('experiment-journal-public-sync-prompted');
@@ -61,6 +58,6 @@ async function addFiles(list){const e=exp();for(const f of list){const key=await
 document.getElementById('mediaInput').onchange=async e=>{await addFiles(e.target.files);e.target.value=''};document.getElementById('mobileMedia').onchange=async e=>{await addFiles(e.target.files);e.target.value=''};
 async function restoreEmbeddedMedia(){for(const e of data.experiments||[])for(const m of e.media||[]){const source=m.dataUrl||(String(m.src||'').startsWith('data:')?m.src:'');if(!source)continue;const response=await fetch(source);if(!response.ok)throw new Error('백업 미디어를 읽을 수 없습니다.');m.key=await put(await response.blob());m.objectUrl=await url(m.key);delete m.dataUrl;delete m.src}}
 document.getElementById('jsonInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());data=parsed&&parsed.format==='experiment-journal-backup-v2'?parsed.data:parsed;normalizeExperiments();await restoreEmbeddedMedia();active=data.activeId||data.experiments[0].id;persist();await hydrate();render();toast('백업을 불러왔습니다.')}catch(error){console.error(error);alert('백업 파일을 읽지 못했습니다.')}};
-async function hydrate(){let missingMedia=false,localMediaCount=0;for(const e of data.experiments)for(const m of e.media||[]){localMediaCount++;if(m.key)try{m.objectUrl=await url(m.key);if(!m.objectUrl)missingMedia=true}catch{missingMedia=true}else if(m.src&&!String(m.src).startsWith('data:'))missingMedia=true}if(!missingMedia&&!localMediaCount)try{const response=await fetch('https://continuingrace.github.io/experiment-journal-public/release.json?check='+Date.now(),{cache:'no-store'});const snapshot=await response.json();missingMedia=response.ok&&(snapshot?.data?.experiments||[]).some(e=>(e.media||[]).length)}catch{}if(missingMedia&&!sessionStorage.getItem('experiment-journal-public-sync-prompted')){sessionStorage.setItem('experiment-journal-public-sync-prompted','1');setTimeout(()=>syncPublishedVersion(true),0)}}
+async function hydrate(){let missingMedia=false,localMediaCount=0;for(const e of data.experiments)for(const m of e.media||[]){localMediaCount++;if(m.key)try{m.objectUrl=await url(m.key);if(!m.objectUrl)missingMedia=true}catch{missingMedia=true}else if(m.src&&!String(m.src).startsWith('data:')&&!/^https?:\/\//i.test(String(m.src)))missingMedia=true}if(!missingMedia&&!localMediaCount)try{const response=await fetch('https://continuingrace.github.io/experiment-journal-public/release.json?check='+Date.now(),{cache:'no-store'});const snapshot=await response.json();missingMedia=response.ok&&(snapshot?.data?.experiments||[]).some(e=>(e.media||[]).length)}catch{}if(missingMedia&&!sessionStorage.getItem('experiment-journal-public-sync-prompted')){sessionStorage.setItem('experiment-journal-public-sync-prompted','1');setTimeout(()=>syncPublishedVersion(true),0)}}
 document.getElementById('save').onclick=()=>persist();document.getElementById('addExp').onclick=()=>{const n=data.experiments.length+1,id='exp'+Date.now();data.experiments.push({id,num:String(n).padStart(2,'0'),kicker:'NEW EXPERIMENT',title:'새로운 실험',date:new Date().toISOString().slice(0,10),summary:'',question:'',context:'',tried:'',friction:'',applied:'',learned:'',next:'',media:[],coverId:null});active=id;persist(true);render();go(id)};
 (async()=>{await hydrate();render()})();
