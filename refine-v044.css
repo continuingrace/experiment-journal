@@ -1,0 +1,22 @@
+/* v0.3.44 — preserve the whole uploaded image/video inside every frame */
+.cover,
+.media,
+.thumb{background:#e9e6df}
+
+.cover img,
+.cover video,
+.media img,
+.media video,
+.thumb img,
+.thumb video{
+  object-fit:contain!important;
+  object-position:center center!important;
+  background:#e9e6df;
+}
+
+@media(max-width:760px){
+  .cover img,
+  .cover video,
+  .media img,
+  .media video{object-fit:contain!important}
+}
