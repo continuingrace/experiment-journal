@@ -336,7 +336,7 @@
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const htmlText=(value)=>htmlEsc(value).replace(/\n/g,'<br>');
+  const htmlText=(value)=>htmlEsc(String(value??'').replace(/\\n/g,'\n')).replace(/\n/g,'<br>');
   const pad=(value)=>String(value).padStart(2,'0');
   const notify=(message)=>{if(typeof toast==='function')toast(message);else console.log(message)};
   const clone=(value)=>JSON.parse(JSON.stringify(value));
@@ -366,12 +366,12 @@
   }
   const mediaMarkup=(item)=>{
     const media=Array.isArray(item.media)?item.media:[];
-    return media.map((entry)=>{const source=entry.src||entry.url||entry.data||entry.dataUrl||'';if(!source)return '';const type=entry.type==='video'||String(source).startsWith('data:video/')?'video':'img';return type==='video'?'<video src="'+htmlEsc(source)+'" controls playsinline></video>':'<img src="'+htmlEsc(source)+'" alt="'+htmlEsc(item.title||'')+'">'}).join('');
+    return media.map((entry)=>{const source=entry.src||entry.url||entry.data||entry.dataUrl||'';if(!source)return '';const type=entry.type==='video'||String(source).startsWith('data:video/')?'video':'img';return type==='video'?'<video src="'+htmlEsc(String(source).startsWith('data:')||String(source).includes('#t=')?source:String(source)+'#t=0.001')+'" controls playsinline preload="metadata"></video>':'<img src="'+htmlEsc(source)+'" alt="'+htmlEsc(item.title||'')+'">'}).join('');
   };
   function buildReleaseHtml(snapshot){
     const info=snapshot.data||{};const overview=info.overview||{};const experiments=Array.isArray(info.experiments)?info.experiments:[];
     const source=(media)=>media&&(media.src||media.url||media.data||media.dataUrl||'');
-    const mediaElement=(media,alt)=>{const value=source(media);if(!value)return '';return media.type==='video'||String(value).startsWith('data:video/')?'<video src="'+htmlEsc(value)+'" controls playsinline aria-label="'+htmlEsc(alt)+'"></video>':'<img src="'+htmlEsc(value)+'" alt="'+htmlEsc(alt)+'">'};
+    const mediaElement=(media,alt)=>{const value=source(media);if(!value)return '';const isVideo=media.type==='video'||String(value).startsWith('data:video/');if(!isVideo)return '<img src="'+htmlEsc(value)+'" alt="'+htmlEsc(alt)+'">';const firstFrame=String(value).startsWith('data:')||String(value).includes('#t=')?value:String(value)+'#t=0.001';return '<video src="'+htmlEsc(firstFrame)+'" controls playsinline preload="metadata" aria-label="'+htmlEsc(alt)+'"></video>'};
     const story=(label,value)=>'<section class="story"><div class="story-label">'+label+'</div><p>'+htmlText(value||'')+'</p></section>';
     const experiment=(item,index)=>{const media=Array.isArray(item.media)?item.media:[];const cover=media.find(entry=>entry.id===item.coverId)||media[0];const rest=media.filter(entry=>entry!==cover);const gallery=rest.length?'<div class="gallery">'+rest.map(entry=>'<figure>'+mediaElement(entry,entry.label||item.title||'')+'<figcaption>'+htmlText(entry.label||'')+'</figcaption></figure>').join('')+'</div>':'';return '<article class="experiment"><header class="experiment-head"><div><div class="eyebrow">실험 '+Number(item.num||index+1)+'. '+htmlText(item.kicker||'')+'</div><h2>'+htmlText(item.title||'')+'</h2></div><time>'+htmlEsc(item.date||'')+'</time></header><div class="card">'+(cover?'<div class="cover">'+mediaElement(cover,item.title||'')+'<span class="badge">'+htmlText(item.kicker||'')+'</span></div>':'')+'<div class="body"><p class="lead">'+htmlText(item.summary||'')+'</p><div class="stories">'+story('QUESTION&nbsp;&nbsp; 질문',item.question)+story('CONTEXT&nbsp;&nbsp; 문제 상황',item.context)+story('TRY&nbsp;&nbsp; 시도',item.tried)+story('FRICTION&nbsp;&nbsp; 막힌 지점',item.friction)+story('CHANGE&nbsp;&nbsp; 바꾼 점',item.applied)+story('LEARNED&nbsp;&nbsp; 배운 점',item.learned)+story('NEXT&nbsp;&nbsp; 더 시도해 보면 좋을 것',item.next)+'</div>'+gallery+'</div></div></article>'};
     const timeline=experiments.map((item,index)=>'<div class="step"><small>'+htmlEsc(String(item.num||index+1).padStart(2,'0'))+'</small><strong>'+htmlText(item.kicker||'')+'</strong><span>'+htmlText(item.title||'')+'</span></div>').join('');let groups='';
