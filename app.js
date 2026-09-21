@@ -8,7 +8,7 @@ let data=(()=>{try{return JSON.parse(localStorage.getItem(KEY))||structuredClone
 function normalizeExperiments(){data.experiments.forEach(e=>{if(typeof e.context!=='string')e.context=''})}
 normalizeExperiments();
 let active=data.activeId||'exp1';
-const exp=()=>data.experiments.find(x=>x.id===active),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),nl=s=>esc(s).replace(/\n/g,'<br>');
+const exp=()=>data.experiments.find(x=>x.id===active),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),nl=s=>esc(String(s??'').replace(/\\n/g,'\n')).replace(/\n/g,'<br>');
 function persist(silent=false){data.activeId=active;localStorage.setItem(KEY,JSON.stringify(data));if(!silent)toast('저장되었습니다')}
 function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}window.go=go;
 function render(){nav();timeline();sections();editor()}
