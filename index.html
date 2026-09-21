@@ -13,17 +13,17 @@
   <link rel="stylesheet" href="refine-v022.css?v=0.3.22">
   <link rel="stylesheet" href="refine-v024.css?v=0.3.24">
   <link rel="stylesheet" href="refine-v025.css?v=0.3.25">
-  <link rel="stylesheet" href="refine-v044.css?v=0.3.45">
+  <link rel="stylesheet" href="refine-v044.css?v=0.3.46">
 </head>
 <body>
   <header class="top">
-    <div class="brand"><span class="mark">EJ</span><span>Experiment Journal</span><span class="ver">v0.3.45</span></div>
+    <div class="brand"><span class="mark">EJ</span><span>Experiment Journal</span><span class="ver">v0.3.46</span></div>
     <div class="actions"><button class="btn desktop" id="backupBtn" type="button">백업</button><button class="btn desktop" id="restoreBtn" type="button">불러오기</button><button class="btn desktop" id="publishBtn" type="button">웹 공개</button><button class="btn primary" type="button" onclick="window.print()">PDF / 인쇄</button></div>
   </header>
   <div class="layout">
     <aside class="left"><div class="label">Experiments</div><nav class="nav" id="nav" aria-label="실험 목록"></nav><button class="btn" style="width:100%;margin-top:12px" id="addExp" type="button">＋ 새 실험</button><div class="label" style="margin-top:32px">View</div><button class="btn" style="width:100%" type="button" onclick="go('overview')">전체 성장 리뷰</button></aside>
     <main class="main">
-      <section class="hero" id="overview"><div class="eyebrow">허들링클럽 1기 AI Experiment Archive · 2026</div><h1>Riding<br>the Wave.</h1><p id="heroCopy" class="overview-copy">허들링클럽을 통해 배우고 얻은 것을 사이클 실험 미션을 통해 시도하면서날마다 변화하고 파도 같이 새로운 것이 쏟아지는 AI 시대에불안이 아닌 파도타기를 하듯 역량을 기르고 성장하고 있어요.지금까지 실험한 결과물들을 정리해 보았습니다.</p></section>
+      <section class="hero" id="overview"><div class="eyebrow">허들링클럽 1기 AI Experiment Archive · 2026</div><h1>Riding<br>the Wave.</h1><p id="heroCopy" class="overview-copy">허들링클럽을 통해 배우고 얻은 것을 사이클 실험 미션으로 직접 시도해 보았습니다. 날마다 변화하고 파도처럼 새로운 것이 쏟아지는 AI 시대에, 불안해하기보다 파도를 타듯 역량을 기르고 성장하고 있어요.<br><br>지금까지 실험한 결과물들을 정리해 보았습니다.</p></section>
       <section class="timeline" id="timeline" aria-label="실험 요약"></section><div id="sections"></div>
       <section class="section"><div class="eyebrow">What changed across experiments</div><p id="overviewChangedLead" class="big overview-copy overview-big">처음에는 반복 업무를 AI와 함께 굴리는 구조를 만들었고, 이후에는 결과의 일관성과 정체성을 설계하고, 지금은 지식 흐름까지 연결하고 있습니다.</p><p id="overviewChangedBody" class="sub overview-copy">WORKFLOW → CONSISTENCY → IDENTITY → SYSTEM. 도구는 계속 바뀌지만, 문제를 작게 정의하고 실제로 실행해 보고 규칙을 남긴 뒤 다음 업무로 확장하는 방식은 점점 제 것이 되어가고 있습니다.</p></section>
       <section class="section"><div id="overviewPrincipleLabel" class="eyebrow">나만의 기준</div><p id="overviewPrincipleText" class="big overview-copy overview-big">모든 파도를 따라잡을 필요는 없다.계속 타보면서 나만의 균형을 찾으면 된다.</p></section>
@@ -32,7 +32,7 @@
   </div>
   <nav class="mobilebar" aria-label="모바일 도구"><button type="button" onclick="go('overview')">Overview</button><button type="button" onclick="pickExp()">Experiments</button><button type="button" onclick="mobileEdit()">Write</button><button type="button" onclick="tools()">Tools</button></nav>
   <div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div><div class="toast" id="toast"></div><input class="hidden" id="jsonInput" type="file" accept="application/json" aria-label="JSON 백업 파일 선택"><input class="hidden" id="mobileMedia" type="file" accept="image/*,video/*" multiple aria-label="이미지 또는 영상 파일 선택">
-  <script src="app.js?v=0.3.45"></script><script src="v013.js?v=0.3.45"></script><script src="v014.js?v=0.3.45"></script>
-  <script src="v015.js?v=0.3.45"></script>
+  <script src="app.js?v=0.3.46"></script><script src="v013.js?v=0.3.46"></script><script src="v014.js?v=0.3.46"></script>
+  <script src="v015.js?v=0.3.46"></script>
 </body>
 </html>
