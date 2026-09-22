@@ -1,0 +1,35 @@
+/* v0.3.47 — cardless experiment layout */
+.card{
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.cover{
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:#eae6dd;
+}
+.body{
+  padding:28px 0 0!important;
+}
+.stories{
+  margin-top:32px;
+}
+.story{
+  border-radius:18px;
+}
+.experiment + .experiment,
+.section + .section{
+  padding-top:56px;
+}
+@media(max-width:760px){
+  .cover{border-radius:20px}
+  .body{padding:24px 0 0!important}
+  .stories{margin-top:28px}
+  .story{border-radius:18px}
+  .experiment + .experiment,
+  .section + .section{padding-top:48px}
+}
