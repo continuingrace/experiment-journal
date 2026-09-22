@@ -382,7 +382,7 @@
   const baseReleaseHtml=buildReleaseHtml;
   buildReleaseHtml=(snapshot)=>baseReleaseHtml(snapshot).replace('<head>','<head><meta property="og:type" content="website"><meta property="og:title" content="Experiment Journal"><meta property="og:description" content="AI Experiment Archive · 2026"><meta property="og:image" content="https://continuingrace.github.io/experiment-journal-public/og-image.jpg?v='+encodeURIComponent(snapshot.version||RELEASE_VERSION)+'"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">');
   const baseReleaseCss=buildReleaseCss;
-  buildReleaseCss=()=>baseReleaseCss()+'body{overflow-wrap:anywhere}.experiment,.card,.body,.stories,.story{min-width:0}.story p{overflow-wrap:anywhere}';
+  buildReleaseCss=()=>baseReleaseCss()+'body{overflow-wrap:anywhere}.experiment,.card,.body,.stories,.story{min-width:0}.story p{overflow-wrap:anywhere}.card{overflow:visible!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}.cover{overflow:hidden;border:1px solid var(--line);border-radius:24px;background:#eae6dd}.body{padding:28px 0 0!important}.stories{margin-top:32px}.story{border-radius:18px}@media(max-width:760px){.cover{border-radius:20px}.body{padding:24px 0 0!important}.stories{margin-top:28px}.story{border-radius:18px}}';
   const utf8Base64=(value)=>btoa(unescape(encodeURIComponent(value)));
   const blobBase64=async(blob)=>String(await blobToDataUrl(blob)).split(',')[1]||'';
   const mediaExtension=(media,blob)=>{
