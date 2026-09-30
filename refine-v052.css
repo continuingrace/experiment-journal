@@ -1,0 +1,14 @@
+/* v0.3.52 — mobile hero readability */
+@media(max-width:760px){
+  .hero .overview-copy,
+  .hero p{
+    max-width:none;
+    font-size:18px;
+    line-height:1.82;
+    letter-spacing:.004em;
+    white-space:pre-line;
+    word-break:keep-all;
+    overflow-wrap:normal;
+    text-wrap:pretty;
+  }
+}
