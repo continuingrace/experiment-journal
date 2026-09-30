@@ -332,7 +332,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.51';
+  const RELEASE_VERSION='0.3.52';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -382,7 +382,7 @@
   const baseReleaseHtml=buildReleaseHtml;
   buildReleaseHtml=(snapshot)=>baseReleaseHtml(snapshot).replace('<head>','<head><meta property="og:type" content="website"><meta property="og:title" content="Experiment Journal"><meta property="og:description" content="AI Experiment Archive · 2026"><meta property="og:image" content="https://continuingrace.github.io/experiment-journal-public/og-image.jpg?v='+encodeURIComponent(snapshot.version||RELEASE_VERSION)+'"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">');
   const baseReleaseCss=buildReleaseCss;
-  buildReleaseCss=()=>baseReleaseCss()+'body{overflow-wrap:anywhere}.experiment,.card,.body,.stories,.story{min-width:0}.story p{overflow-wrap:anywhere}.card{overflow:visible!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}.cover{overflow:hidden;border:1px solid var(--line);border-radius:24px;background:#eae6dd}.body{padding:28px 0 0!important}.stories{margin-top:32px}.story{border-radius:18px}@media(max-width:760px){.cover{border-radius:20px}.body{padding:24px 0 0!important}.stories{margin-top:28px}.story{border-radius:18px}}';
+  buildReleaseCss=()=>baseReleaseCss()+'body{overflow-wrap:anywhere}.experiment,.card,.body,.stories,.story{min-width:0}.story p{overflow-wrap:anywhere}.card{overflow:visible!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}.cover{overflow:hidden;border:1px solid var(--line);border-radius:24px;background:#eae6dd}.body{padding:28px 0 0!important}.stories{margin-top:32px}.story{border-radius:18px}@media(max-width:760px){.cover{border-radius:20px}.body{padding:24px 0 0!important}.stories{margin-top:28px}.story{border-radius:18px}.hero p{max-width:none;font-size:18px;line-height:1.82;letter-spacing:.004em;white-space:pre-line;word-break:keep-all;overflow-wrap:normal;text-wrap:pretty}}';
   const utf8Base64=(value)=>btoa(unescape(encodeURIComponent(value)));
   const blobBase64=async(blob)=>String(await blobToDataUrl(blob)).split(',')[1]||'';
   const mediaExtension=(media,blob)=>{
