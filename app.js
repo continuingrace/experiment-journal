@@ -73,6 +73,58 @@ async function addFiles(list){const e=exp();for(const f of list){const key=await
 document.getElementById('mediaInput').onchange=async e=>{await addFiles(e.target.files);e.target.value=''};document.getElementById('mobileMedia').onchange=async e=>{await addFiles(e.target.files);e.target.value=''};
 async function restoreEmbeddedMedia(){for(const e of data.experiments||[])for(const m of e.media||[]){const source=m.dataUrl||(String(m.src||'').startsWith('data:')?m.src:'');if(!source)continue;const response=await fetch(source);if(!response.ok)throw new Error('백업 미디어를 읽을 수 없습니다.');m.key=await put(await response.blob());m.objectUrl=await url(m.key);delete m.dataUrl;delete m.src}}
 document.getElementById('jsonInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());data=parsed&&parsed.format==='experiment-journal-backup-v2'?parsed.data:parsed;normalizeExperiments();await restoreEmbeddedMedia();active=data.activeId||data.experiments[0].id;persist();await hydrate();render();toast('백업을 불러왔습니다.')}catch(error){console.error(error);alert('백업 파일을 읽지 못했습니다.')}};
-async function hydrate(){let missingMedia=false,localMediaCount=0,didNormalize=false;for(const e of data.experiments)for(const m of e.media||[]){localMediaCount++;if(m.key)try{m.objectUrl=await url(m.key);if(!m.objectUrl&&!m.src)missingMedia=true}catch{if(!m.src)missingMedia=true}else if(m.src&&!String(m.src).startsWith('data:')&&!/^https?:\/\//i.test(String(m.src))){try{m.src=new URL(String(m.src).replace(/^\.\//,''),PUBLIC_MEDIA_BASE).href;didNormalize=true}catch{missingMedia=true}}}if(didNormalize)persist(true);if(!missingMedia&&!localMediaCount)try{const response=await fetch('https://continuingrace.github.io/experiment-journal-public/release.json?check='+Date.now(),{cache:'no-store'});const snapshot=await response.json();missingMedia=response.ok&&(snapshot?.data?.experiments||[]).some(e=>(e.media||[]).length)}catch{}if(missingMedia&&!sessionStorage.getItem('experiment-journal-public-sync-prompted')){sessionStorage.setItem('experiment-journal-public-sync-prompted','1');setTimeout(()=>syncPublishedVersion(true),0)}}
+async function repairMissingMediaFromPublic(){
+  try{
+    const response=await fetch(PUBLIC_MEDIA_BASE+'release.json?media-repair='+Date.now(),{cache:'no-store'});
+    if(!response.ok)return false;
+    const snapshot=await response.json();
+    let changed=false;
+    for(const localExp of data.experiments||[]){
+      const remoteExp=(snapshot?.data?.experiments||[]).find(e=>e.id===localExp.id);
+      if(!remoteExp)continue;
+      for(const localMedia of localExp.media||[]){
+        if(src(localMedia))continue;
+        const remoteMedia=(remoteExp.media||[]).find(m=>m.id===localMedia.id)||(remoteExp.media||[]).find(m=>m.label===localMedia.label&&m.type===localMedia.type);
+        const remoteSource=remoteMedia?.src||remoteMedia?.url||'';
+        if(!remoteSource)continue;
+        localMedia.src=new URL(remoteSource,PUBLIC_MEDIA_BASE).href;
+        delete localMedia.objectUrl;
+        changed=true;
+      }
+    }
+    if(changed)persist(true);
+    return changed;
+  }catch(error){console.warn('media repair skipped',error);return false}
+}
+async function hydrate(){
+  let missingMedia=false,localMediaCount=0,didNormalize=false;
+  for(const e of data.experiments)for(const m of e.media||[]){
+    localMediaCount++;
+    if(m.key){
+      try{
+        m.objectUrl=await url(m.key);
+        if(!m.objectUrl&&!m.src)missingMedia=true;
+      }catch{
+        if(!m.src)missingMedia=true;
+      }
+    }else if(m.src&&!String(m.src).startsWith('data:')&&!/^https?:\/\//i.test(String(m.src))){
+      try{m.src=new URL(String(m.src).replace(/^\.\//,''),PUBLIC_MEDIA_BASE).href;didNormalize=true}catch{missingMedia=true}
+    }
+  }
+  if(didNormalize)persist(true);
+  if(missingMedia){
+    const repaired=await repairMissingMediaFromPublic();
+    if(repaired)missingMedia=false;
+  }
+  if(!missingMedia&&!localMediaCount)try{
+    const response=await fetch(PUBLIC_MEDIA_BASE+'release.json?check='+Date.now(),{cache:'no-store'});
+    const snapshot=await response.json();
+    missingMedia=response.ok&&(snapshot?.data?.experiments||[]).some(e=>(e.media||[]).length);
+  }catch{}
+  if(missingMedia&&!sessionStorage.getItem('experiment-journal-public-sync-prompted')){
+    sessionStorage.setItem('experiment-journal-public-sync-prompted','1');
+    setTimeout(()=>syncPublishedVersion(true),0);
+  }
+}
 document.getElementById('save').onclick=()=>persist();document.getElementById('addExp').onclick=()=>{const n=data.experiments.length+1,id='exp'+Date.now();data.experiments.push({id,num:String(n).padStart(2,'0'),kicker:'NEW EXPERIMENT',title:'새로운 실험',date:new Date().toISOString().slice(0,10),summary:'',question:'',context:'',tried:'',friction:'',applied:'',learned:'',next:'',media:[],coverId:null});active=id;persist(true);render();go(id)};
 (async()=>{await hydrate();render()})();
