@@ -11,13 +11,36 @@ let active=data.activeId||'exp1';
 const exp=()=>data.experiments.find(x=>x.id===active),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),nl=s=>esc(String(s??'').replace(/\\n/g,'\n')).replace(/\n/g,'<br>');
 function persist(silent=false){data.activeId=active;const stored=structuredClone(data);for(const e of stored.experiments||[])for(const m of e.media||[])delete m.objectUrl;localStorage.setItem(KEY,JSON.stringify(stored));if(!silent)toast('저장되었습니다')}
 function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}window.go=go;
-function primeVideoFrames(){
-  document.querySelectorAll('video').forEach(v=>{
-    v.preload='auto';v.muted=true;v.setAttribute('playsinline','');
-    const prime=()=>{try{if(v.readyState>=2&&v.currentTime===0){v.currentTime=Math.min(.04,Math.max(.01,(Number.isFinite(v.duration)?v.duration:1)/1000));v.pause()}}catch{}};
-    if(v.readyState>=2)prime();else v.addEventListener('loadeddata',prime,{once:true});
-  });
+function createVideoPoster(v){
+  if(v.dataset.posterReady==='1'||v.poster)return;
+  v.preload='auto';v.muted=true;v.setAttribute('playsinline','');
+  const capture=()=>{
+    try{
+      if(v.videoWidth<2||v.videoHeight<2)return;
+      const canvas=document.createElement('canvas');
+      const max=960,scale=Math.min(1,max/v.videoWidth);
+      canvas.width=Math.max(1,Math.round(v.videoWidth*scale));
+      canvas.height=Math.max(1,Math.round(v.videoHeight*scale));
+      const ctx=canvas.getContext('2d');
+      if(!ctx)return;
+      ctx.drawImage(v,0,0,canvas.width,canvas.height);
+      v.poster=canvas.toDataURL('image/jpeg',.82);
+      v.dataset.posterReady='1';
+      v.pause();
+      try{v.currentTime=0}catch{}
+    }catch(error){console.warn('video poster capture skipped',error)}
+  };
+  const seek=()=>{
+    try{
+      const target=Number.isFinite(v.duration)&&v.duration>0?Math.min(.08,Math.max(.02,v.duration/1000)):.04;
+      if(Math.abs(v.currentTime-target)>.01)v.currentTime=target;
+      else capture();
+    }catch{capture()}
+  };
+  if(v.readyState>=2)seek(); else v.addEventListener('loadeddata',seek,{once:true});
+  v.addEventListener('seeked',capture,{once:true});
 }
+function primeVideoFrames(){document.querySelectorAll('video').forEach(createVideoPoster)}
 function render(){nav();timeline();sections();editor();requestAnimationFrame(primeVideoFrames)}
 function nav(){document.getElementById('nav').innerHTML=data.experiments.map(e=>`<button type="button" class="${e.id===active?'active':''}" onclick="selectExp('${e.id}')"><small>${e.num}</small><span><b>${esc(e.kicker)}</b><em>${esc(e.title)}</em></span></button>`).join('')}
 function timeline(){document.getElementById('timeline').innerHTML=data.experiments.map(e=>`<div class="step"><small>${e.num}</small><b>${esc(e.kicker)}</b><span>${esc(e.title)}</span></div>`).join('')}
