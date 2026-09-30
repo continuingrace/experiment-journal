@@ -301,7 +301,7 @@
 (()=>{
   const PUBLIC_RELEASE_URL='https://continuingrace.github.io/experiment-journal-public/';
   const style=document.createElement('style');
-  style.textContent='.cycle-gallery{display:none!important}#sections .cycle-group{border-top:1px solid #d8d5cc;padding:48px 0 64px;margin:0}#sections .cycle-group:last-child{border-bottom:1px solid #d8d5cc}.cycle-group-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:28px}.cycle-group-heading strong{font-size:12px;letter-spacing:.08em;color:#71808b;font-weight:600}.cycle-group-heading span{font-size:12px;color:#9a988f}.cycle-group .section{margin:0!important;padding:0 0 40px!important}.cycle-group .section+.section{padding-top:40px!important;border-top:1px solid #e2ded5}.cycle-group .section:last-child{padding-bottom:0!important}.cycle-group img,.cycle-group video{cursor:zoom-in}@media(max-width:700px){#sections .cycle-group{padding:32px 0 44px}.cycle-group-heading{margin-bottom:20px}.cycle-group .section{padding-bottom:28px!important}.cycle-group .section+.section{padding-top:28px!important}}';
+  style.textContent='.cycle-gallery{display:none!important}#sections .cycle-group{border-top:1px solid #d8d5cc;padding:48px 0 64px;margin:0}#sections .cycle-group:last-child{border-bottom:1px solid #d8d5cc}.cycle-group-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:28px}.cycle-group-heading strong{font-size:12px;letter-spacing:.08em;color:#71808b;font-weight:600}.cycle-group-heading span{font-size:12px;color:#9a988f}.cycle-group .section{margin:0!important;padding:0 0 40px!important}.cycle-group .section+.section{padding-top:40px!important;border-top:1px solid #e2ded5}.cycle-group .section:last-child{padding-bottom:0!important}.cycle-group img{cursor:zoom-in}.cycle-group video{cursor:default}@media(max-width:700px){#sections .cycle-group{padding:32px 0 44px}.cycle-group-heading{margin-bottom:20px}.cycle-group .section{padding-bottom:28px!important}.cycle-group .section+.section{padding-top:28px!important}}';
   document.head.appendChild(style);
   function openMedia(media){
     let box=document.getElementById('releaseLightbox');
@@ -327,12 +327,12 @@
   sections=()=>{previousSections();setTimeout(groupCycles,0)};
   groupCycles();
   const root=document.getElementById('sections');
-  if(root){root.addEventListener('click',event=>{const media=event.target.closest('img,video');if(media&&media.closest('.cycle-group'))openMedia(media)});new MutationObserver(()=>setTimeout(groupCycles,0)).observe(root,{childList:true})}
+  if(root){root.addEventListener('click',event=>{const media=event.target.closest('img');if(media&&media.closest('.cycle-group'))openMedia(media)});new MutationObserver(()=>setTimeout(groupCycles,0)).observe(root,{childList:true})}
   const publish=document.getElementById('publishBtn');
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.50';
+  const RELEASE_VERSION='0.3.51';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
