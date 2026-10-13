@@ -1,23 +1,22 @@
 (()=>{
   if(typeof data==='undefined'||!Array.isArray(data.experiments)) return;
-  const KEY='experiment-journal-cycle4-harness-v2';
+  const KEY='experiment-journal-cycle4-harness-v3';
 
   const harnessCopy={
     kicker:'HARNESS SYSTEM',
     title:'디자인·웹앱 검수 하네스 2종 만들기',
-    summary:'디자인 제작과 웹앱 검수에서 기준이 흔들리지 않도록, 목적이 다른 하네스 2종을 만들었습니다.',
-    question:'AI가 작업을 돕더라도 확인하지 않은 결과를 통과시키지 않고, 원본과 품질 기준을 지키게 할 수 있을까?',
-    context:'AI 도구를 활용할수록 빠르게 만드는 것만큼 검증 기준과 사람의 승인 지점을 정하는 일이 중요해졌습니다. 디자인 제작에서는 Figma 원본 보호와 디자인 시스템 준수, 웹앱에서는 배포 전·후 QA와 실제 기기 확인을 반복 가능한 구조로 만들 필요가 있었습니다.',
-    tried:'• CiT 디자인 하네스: Claude는 Figma를 읽기 전용으로 점검하고, Codex는 별도 staging 파일에서만 제작하도록 역할을 분리\n• 사람이 승인한 디자인 기준을 SSOT로 두고 쓰기 전 승인과 preflight 검사를 구성\n• 웹앱 검수 하네스: 입력 확인 → 정적 검사 → 브라우저 검사 → 운영 URL 검사 → 사람 승인 → 릴리스 기록의 흐름을 설계\n• sample app 검증 페이지로 실제 QA 흐름을 테스트',
-    friction:'문서에 규칙을 적는 것만으로는 실제 쓰기 권한이나 배포 품질을 보장할 수 없었습니다. 자동 검사가 확인하지 못한 항목을 통과로 추정하면 오히려 위험했고, 디자인 제작과 웹앱 검수는 필요한 권한과 판정 기준도 달랐습니다.',
-    applied:'두 하네스의 역할을 분리했습니다. 디자인 하네스는 SSOT·읽기 전용 점검·staging·승인 게이트로 원본을 보호하고, 웹앱 하네스는 스크립트 판정·운영 URL 확인·실제 모바일 검수·사람 승인으로 릴리스 품질을 확인합니다. 공통 원칙은 “확인하지 않은 것은 통과가 아니다”로 두었습니다.',
-    learned:'하네스는 AI를 더 많이 자동화하는 장치라기보다, 무엇을 자동화하고 어디서 사람이 확인해야 하는지 경계를 만드는 장치였습니다. 같은 QA라도 제작 보호와 릴리스 검수는 목적이 달라 각각의 하네스로 설계하는 편이 더 명확했습니다.',
-    next:'• 실제 프로젝트에 적용하며 오탐과 누락 기록하기\n• 반복되는 승인·검증 단계에서 자동화할 범위와 사람이 확인할 범위를 더 명확히 하기',
+    summary:'AI로 디자인과 웹앱을 만들 때 무엇을 확인해야 하는지 놓치지 않도록, 목적이 다른 하네스 2종을 만들었습니다.',
+    question:'AI로 디자인과 웹앱을 만들 때, 매번 같은 기준으로 확인하고 놓친 문제를 줄일 수 있을까?',
+    context:'9월 무료 라이브를 참고해 PRD → 레퍼런스 → 화면 설계 → Figma 시안을 돕는 디자인 제작 하네스를 먼저 만들었습니다. 이후 사이클 4의 “나에게 딱 맞는 디자인 하네스를 직접 세팅” 실습을 따라 하며, 개인 웹앱의 반복적인 검수와 배포 과정을 위한 두 번째 하네스를 만들었습니다.',
+    tried:'• 디자인 제작 하네스: 작업 순서를 정하고, 원본 Figma는 직접 건드리지 않도록 별도 작업 공간과 확인 절차를 구성\n• 공개용 저장소에는 조직명·내부 자료·개인정보를 제외한 사본만 정리\n• 웹앱 검수 하네스: 웹앱 검사 → 배포 확인 → 사용자 승인 → 릴리스 기록 순서로 검수 흐름 구성\n• sample-app으로 자동 검사를 돌린 뒤 아이폰에서 실제 화면과 홈 화면 설치까지 확인',
+    friction:'자동 검사를 통과한 sample-app도 아이폰에서 보니 간격과 글자 위계가 어색했습니다. 검수 결과에 처음 보는 용어도 많아, Codex에 하나씩 물어보며 실제 의미와 결과를 확인해야 했습니다.',
+    applied:'첫 모바일 검수는 승인하지 않고 화면과 검사 기준을 다시 보완했습니다. 이후 자동 테스트 261개 통과, 의도적으로 만든 오류 10개 차단, 아이폰 모바일·홈 화면 설치 확인, 민감정보 검사 0건을 확인하고 sample-app 1.0.1을 릴리스했습니다. 이후 실제 웹앱 사본에 적용하면서 외부 폰트 URL의 숫자를 앱 버전으로 잘못 읽는 문제와 고정된 아이콘 경로만 검사하던 한계도 찾아 하네스를 보완했습니다.',
+    learned:'자동 테스트를 통과했다고 해서 바로 완성된 것은 아니었습니다. 실제 기기에서 직접 보고 사람이 승인하는 단계가 함께 있어야 놓친 문제를 줄일 수 있었습니다. 하네스는 AI가 대신 판단하는 도구라기보다, 확인할 순서와 기준을 빠뜨리지 않게 도와주는 체크 시스템에 가까웠습니다.',
+    next:'전체 디자인 기준을 더 적용한 뒤, 실제 프로젝트에서 공식 재검수하기',
     resources:[
       {label:'디자인 제작 하네스',url:'https://github.com/continuingrace/cit-design-harness'},
       {label:'웹앱 검수 하네스',url:'https://github.com/continuingrace/re-webapp-factory-harness'},
-      {label:'검증 페이지',url:'https://continuingrace.github.io/re-webapp-factory-harness/fixtures/sample-app/'},
-      {label:'대화 자료 · CiT 디자인 하네스',url:'https://chatgpt.com/s/cx_6acdddced38c8191ab753e648b488f39'}
+      {label:'검증 페이지',url:'https://continuingrace.github.io/re-webapp-factory-harness/fixtures/sample-app/'}
     ]
   };
 
@@ -27,9 +26,7 @@
   const second=data.experiments.find(match07)||null;
 
   if(!localStorage.getItem(KEY)){
-    const merged=first||{
-      id:'exp-harness-system',num:'06',date:'2026-09-29',media:[],coverId:null
-    };
+    const merged=first||{id:'exp-harness-system',num:'06',date:'2026-10-05',media:[],coverId:null};
     const media=[];
     const seen=new Set();
     for(const source of [first,second]) for(const item of source?.media||[]){
@@ -37,7 +34,7 @@
       if(key&&!seen.has(key)){seen.add(key);media.push(item)}
     }
     Object.assign(merged,harnessCopy,{num:'06',cycle:'04'});
-    merged.date=first?.date||second?.date||merged.date||'2026-09-29';
+    merged.date=first?.date||second?.date||merged.date||'2026-10-05';
     merged.media=media.length?media:(merged.media||[]);
     merged.coverId=(first?.coverId&&merged.media.some(m=>m.id===first.coverId)?first.coverId:null)||(second?.coverId&&merged.media.some(m=>m.id===second.coverId)?second.coverId:null)||merged.media[0]?.id||null;
 
