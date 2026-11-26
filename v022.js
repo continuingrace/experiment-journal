@@ -23,10 +23,12 @@
       <audio controls preload="metadata" aria-label="사이클 5에서 제작한 BGM WAV 음원" src="${wavURL}"></audio>
       <div class="motion-bgm-file">WAV 원본 · <a href="${wavURL}" target="_blank" rel="noopener noreferrer">음원 파일 열기</a></div>
       <details><summary>음악 제작 과정 자세히 보기</summary>
-        <p><strong>생성</strong> · MusicGen small을 Python으로 로컬 CPU에서 실행, 약 14초 음악 생성 (seed 41). 메모리 부족을 피하기 위해 짧은 음원을 만들었습니다.</p>
-        <p><strong>선택</strong> · 시안 5개 중 candidate-melodic-2.wav 채택. 재즈 힙합·플루트·바이올린, 100 BPM의 연주곡을 요청했습니다.</p>
-        <p><strong>편집</strong> · Python/NumPy로 세 구간을 이어 붙이고, 필터·되감기·스터터·바이닐 노이즈로 변주했습니다.</p>
-        <p><strong>마무리</strong> · FFmpeg 2단 압축과 loudnorm, alimiter로 음량을 정돈했습니다. 작업 기록상 최종 길이는 41.2초이며 영상에는 약 29.3초를 사용했습니다.</p>
+        <p><strong>생성</strong> · <code>facebook/musicgen-small</code>을 Python <code>transformers</code> + <code>torch</code>로 로컬 CPU에서 실행했습니다. seed 41, 약 14초(<code>max_new_tokens=700</code>)로 생성해 메모리 부족(OOM)을 피했습니다.</p>
+        <p><strong>프롬프트</strong> · lo-fi jazz hop beat with a catchy flute and violin melody, chopped soul sample, punchy drums, deep bass, bright and energetic, 100 bpm, instrumental</p>
+        <p><strong>선택</strong> · hiphop 2종, melodic 2종, 비트·멜로디 혼합 1종의 시안 5개 중 <code>candidate-melodic-2.wav</code>를 채택했습니다.</p>
+        <p><strong>편집</strong> · Python/NumPy(<code>dj2.py</code>)로 세 구간을 연결했습니다. 저역 필터 스윕, 되감기·스터터, 고역 필터 드롭, 바이닐 노이즈·클릭을 넣었습니다.</p>
+        <p><strong>음량 정리</strong> · FFmpeg <code>acompressor</code> 2단(−28 dB ratio 6 → −20 dB ratio 3), <code>loudnorm</code>(I=−15, TP=−2, LRA=7), <code>alimiter</code>(0.95). 크로스페이드 1.5초 → 0.5초로 조정했습니다.</p>
+        <p><strong>제작 기록</strong> · 최종 길이 41.2초, 48kHz 스테레오, −16.0 LUFS, True Peak −2.4 dBTP. 영상에 약 29.3초 사용. GitHub WAV의 실제 메타데이터는 별도 대조 전입니다.</p>
       </details>
       <p class="motion-bgm-license"><strong>이용 주의</strong> · ${note.replace('음원 이용 주의 · ','')} <a href="${licenseURL}" target="_blank" rel="noopener noreferrer">공식 모델 카드</a></p>`;
     body.appendChild(panel);
