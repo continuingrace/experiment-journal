@@ -174,18 +174,18 @@
     coverId:null
   };
   if(data.experiments.length===0&&!data.experiments.some(e=>e.id===secondExperiment.id)) data.experiments.splice(1,0,secondExperiment);
-  data.experiments.forEach((e,i)=>e.num=String(i+1).padStart(2,'0'));
+  // Do not overwrite experiment numbering already stored by newer cycles.\n  data.experiments.forEach((e,i)=>{if(e.num==null)e.num=String(i+1).padStart(2,'0')});
   if(typeof persist==='function') persist(true);
   if(typeof render==='function') render();
   const relabel=()=>document.querySelectorAll('.eyebrow').forEach(el=>{const next=el.textContent.replace(/^Experiment /,'사이클 실험 ');if(next!==el.textContent)el.textContent=next});
   const sectionsEl=document.getElementById('sections');
-  if(sectionsEl){new MutationObserver(relabel).observe(sectionsEl,{childList:true,subtree:true});relabel()}
+  if(sectionsEl)relabel()
 })();
 
 
 (()=>{
   if(typeof data==='undefined'||!Array.isArray(data.experiments)) return;
-  const assignCycles=()=>data.experiments.forEach((e,i)=>e.cycle=String(Math.floor(i/2)+1).padStart(2,'0'));
+  const assignCycles=()=>data.experiments.forEach((e,i)=>{if(!e.cycle)e.cycle=String(Math.floor(i/2)+1).padStart(2,'0')});
   const relabel=()=>document.querySelectorAll('#sections .eyebrow').forEach(el=>{if(el.closest('.cycle-group'))return;
     const section=el.closest('.section');
     const item=section&&data.experiments.find(e=>e.id===section.id);
@@ -197,7 +197,7 @@
   if(typeof persist==='function')persist(true);
   if(typeof render==='function')render();
   const sectionsEl=document.getElementById('sections');
-  if(sectionsEl){new MutationObserver(relabel).observe(sectionsEl,{childList:true,subtree:true});relabel()}
+  if(sectionsEl)relabel()
 })();
 
 
