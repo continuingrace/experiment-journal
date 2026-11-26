@@ -98,23 +98,6 @@
     if(change&&typeof persist==='function')persist(true);
   }
 
-  // The binary is uploaded separately to the public repository.
-  // Do not display a broken video before the public file is actually available.
-  const movie=data.experiments.find(e=>e.id==='exp-motion-harness');
-  const movieURL='https://continuingrace.github.io/experiment-journal-public/media/mission-to-income-v2_2026-11-08_20-59-11.mp4';
-  const fileID='motion-20261108-video';
-  if(movie){
-    fetch(movieURL,{method:'HEAD',cache:'no-store'}).then(r=>{
-      if(!r.ok)return;
-      const existing=(movie.media||[]).find(m=>m.id===fileID||m.src===movieURL);
-      if(!existing){
-        movie.media=Array.isArray(movie.media)?movie.media:[];
-        movie.media.push({id:fileID,type:'video',label:'사이클 5 · 모션 하네스 결과 영상',src:movieURL});
-        if(!movie.coverId)movie.coverId=fileID;
-        if(typeof persist==='function')persist(true);
-  if(typeof render==='function')render();
-      }
-    }).catch(()=>{});
-  }
+  // Cycle 5 media is managed by v021.js to avoid duplicate video entries.
   if(typeof render==='function')render();
 })();
