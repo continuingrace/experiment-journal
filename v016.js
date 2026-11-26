@@ -48,7 +48,7 @@
       e.cycle=cycleById[e.id]||e.cycle||String(i+1).padStart(2,'0');
     });
     data.overview=data.overview||{};
-    data.overview.cycleTopics=Object.assign({},data.overview.cycleTopics||{}, {'04':'하네스 만들기'});
+    data.overview.cycleTopics=Object.assign({},data.overview.cycleTopics||{}, {'04':"기획부터 디자인까지 쭉! AI 디자인 하네스 만들기"});
     if(active===second?.id||!data.experiments.some(e=>e.id===active)) active=merged.id;
     data.activeId=active;
     localStorage.setItem(KEY,'1');
@@ -102,7 +102,7 @@
   function ensureCycle4Editor(){
     const block=document.getElementById('cycleTopicEditor');
     if(!block||block.querySelector('[data-cycle-topic="04"]'))return;
-    const field=document.createElement('div');field.className='field';field.innerHTML='<label>사이클 04 주제</label><input data-cycle-topic="04" value="'+esc(data.overview?.cycleTopics?.['04']||'하네스 만들기')+'">';
+    const field=document.createElement('div');field.className='field';field.innerHTML='<label>사이클 04 주제</label><input data-cycle-topic="04" value="'+esc(data.overview?.cycleTopics?.['04']||"기획부터 디자인까지 쭉! AI 디자인 하네스 만들기")+'">';
     block.appendChild(field);
     const input=field.querySelector('input');
     input.oninput=()=>{data.overview=data.overview||{};data.overview.cycleTopics=data.overview.cycleTopics||{};data.overview.cycleTopics['04']=input.value;if(typeof persist==='function')persist(true);rebuildCycleGroups()};
