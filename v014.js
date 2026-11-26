@@ -67,7 +67,7 @@
     document.querySelectorAll('#sections .cycle-group').forEach(group=>{
       const cycle=group.dataset.cycle||'01';
       const heading=group.querySelector('.cycle-group-heading strong');
-      const next='[사이클 '+Number(cycle)+']'+(values[cycle]?' '+values[cycle]:'');
+      const next=(cycle==='CH'?'[챌린지]':'[사이클 '+Number(cycle)+']')+(values[cycle]?' '+values[cycle]:'');
       if(heading&&heading.textContent!==next)heading.textContent=next;
     });
   }
@@ -332,7 +332,7 @@
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
 (()=>{
-  const RELEASE_VERSION='0.3.52';
+  const RELEASE_VERSION='0.3.56';
   const SNAPSHOT_KEY='ej-release-snapshot-v1';
   const CONFIG_KEY='ej-publish-config-v1';
   const htmlEsc=(value)=>String(value==null?'':value).replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
