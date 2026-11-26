@@ -64,11 +64,13 @@
   }
 
   function mountResources(){
-    const item=harness();if(!item)return;
-    const section=document.getElementById(item.id),body=section?.querySelector('.body');if(!body)return;
-    body.querySelector('.experiment-resources')?.remove();
-    const lead=body.querySelector('.lead');
-    if(lead)lead.insertAdjacentHTML('afterend',resourceHTML(item));
+    for(const item of data.experiments){
+      const body=document.getElementById(item.id)?.querySelector('.body');
+      if(!body)continue;
+      body.querySelector('.experiment-resources')?.remove();
+      const lead=body.querySelector('.lead');
+      if(lead&&Array.isArray(item.resources)&&item.resources.length)lead.insertAdjacentHTML('afterend',resourceHTML(item));
+    }
   }
 
   function rebuildCycleGroups(){
@@ -90,7 +92,7 @@
     for(const entry of groups){
       const group=document.createElement('div');group.className='cycle-group';group.dataset.cycle=entry.cycle;
       const topic=data.overview?.cycleTopics?.[entry.cycle]||'';
-      const heading=document.createElement('div');heading.className='cycle-group-heading';heading.innerHTML='<strong>[사이클 '+Number(entry.cycle)+']'+(topic?' '+esc(topic):'')+'</strong>';
+      const heading=document.createElement('div');heading.className='cycle-group-heading';heading.innerHTML='<strong>'+(entry.cycle==='CH'?'[챌린지]':'[사이클 '+Number(entry.cycle)+']')+(topic?' '+esc(topic):'')+'</strong>';
       group.appendChild(heading);
       root.insertBefore(group,entry.sections[0]);
       entry.sections.forEach(section=>group.appendChild(section));
