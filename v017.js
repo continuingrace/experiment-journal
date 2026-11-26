@@ -61,6 +61,29 @@
   }
   if(normalized&&typeof persist==='function')persist(true);
 
+  // Attach authentic invitation source graphics. Do not replace user-selected media.
+  const invitationRecord=data.experiments.find(e=>e.id==='exp-invitation-challenge');
+  if(invitationRecord){
+    const base='https://raw.githubusercontent.com/continuingrace/invitation_01/main/public/figma/';
+    const pictures=[
+      {id:'invitation-cover-original',type:'image',label:'초대장 커버 원본 이미지',src:base+'invitation-cover2-image.png'},
+      {id:'invitation-hover-original',type:'image',label:'마우스 오버 이미지',src:base+'Image2hover.png'},
+      {id:'invitation-body-original',type:'image',label:'초대장 본문 일러스트',src:base+'image2-1.png'}
+    ];
+    let change=false;
+    invitationRecord.media=Array.isArray(invitationRecord.media)?invitationRecord.media:[];
+    for(const pic of pictures){
+      if(!invitationRecord.media.some(m=>m.id===pic.id)){invitationRecord.media.push(pic);change=true;}
+    }
+    if(!invitationRecord.coverId){invitationRecord.coverId=pictures[0].id;change=true;}
+    const boardURL='https://continuingrace.github.io/experiment-journal-public/invitation-visual-board.html';
+    invitationRecord.resources=Array.isArray(invitationRecord.resources)?invitationRecord.resources:[];
+    if(!invitationRecord.resources.some(r=>r.url===boardURL)){
+      invitationRecord.resources.push({label:'초대장 이미지 보드',url:boardURL});change=true;
+    }
+    if(change&&typeof persist==='function')persist(true);
+  }
+
   // The binary is uploaded separately to the public repository.
   // Do not display a broken video before the public file is actually available.
   const movie=data.experiments.find(e=>e.id==='exp-motion-harness');
