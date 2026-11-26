@@ -52,7 +52,7 @@ function nav(){
   }
   document.getElementById('nav').innerHTML=groups.map(g=>{
     const isChallenge=g.cycle==='CH';
-    const title=isChallenge?'챌린지':/^\\d+$/.test(g.cycle)?'사이클 '+Number(g.cycle):'별도 실험';
+    const title=isChallenge?'챌린지':/^\d+$/.test(g.cycle)?'사이클 '+Number(g.cycle):'별도 실험';
     const count=!isChallenge?' · '+g.items.length+'개 실험':'';
     const head=`<div class="nav-cycle-heading">${title}${count}</div>`;
     const items=g.items.map((e,index)=>{
