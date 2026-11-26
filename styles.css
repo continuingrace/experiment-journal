@@ -26,3 +26,6 @@
     text-wrap:pretty;
   }
 }
+
+/* v0.3.57 — a challenge is not a numbered cycle experiment */
+.nav button:has(.challenge-index){grid-template-columns:54px minmax(0,1fr)}.nav .challenge-index{font-size:12px;letter-spacing:-.015em;white-space:nowrap;font-weight:650}
