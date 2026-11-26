@@ -288,7 +288,7 @@
     });
   }
   const originalSections=sections;
-  sections=()=>{originalSections();renderCycleGalleries()};
+  sections=()=>{originalSections();document.querySelectorAll("#sections .cycle-gallery").forEach(el=>el.remove())};
   const originalEditor=editor;
   editor=(target='editor',mgr='manager')=>{originalEditor(target,mgr);if(target==='editor'){const upload=document.querySelector('.upload');if(upload&&!upload.querySelector('.cycle-upload-note')){const note=document.createElement('small');note.className='cycle-upload-note';note.textContent='사이클마다 각 실험의 대표 이미지를 1개씩 추가하면 아래에 이미지 2개가 함께 표시됩니다.';upload.insertBefore(note,upload.firstChild)}}};
   data.experiments.forEach((e,i)=>{if(!e.cycle)e.cycle=String(Math.floor(i/2)+1).padStart(2,'0')});
