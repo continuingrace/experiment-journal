@@ -4,7 +4,7 @@
   const newRecords=[
     {
       id:'exp-invitation-challenge',
-      num:'07',cycle:'CH',kind:'challenge',
+      num:'',cycle:'CH',kind:'challenge',
       kicker:'INVITATION',title:'인터랙티브 초대장 만들기',date:'',
       summary:'챌린지 다시보기를 따라 초대장을 완성하고, Codex로 낙엽 효과와 이미지 전환을 추가해 배포했습니다.',
       question:'라이브에서 배운 내용을 따라 내 초대장을 만들고, 원하는 움직임까지 더할 수 있을까?',
@@ -19,7 +19,7 @@
     },
     {
       id:'exp-motion-harness',
-      num:'08',cycle:'05',kind:'cycle',
+      num:'07',cycle:'05',kind:'cycle',
       kicker:'MOTION HARNESS',title:'모션 하네스로 영상 만들기',date:'2026-11-08',
       summary:'사이클 5에서 모션 하네스를 만들고, 이를 활용한 약 29초 분량의 영상 「Mission to Income」을 제작해 제출했습니다.',
       question:'직접 만든 모션 하네스로 영상 결과물까지 완성할 수 있을까?',
@@ -43,7 +43,7 @@
     }
     data.overview=data.overview||{};
     data.overview.cycleTopics={...(data.overview.cycleTopics||{}),'CH':'초대장 만들기','05':'모션 하네스와 영상 만들기'};
-    if(changed){data.experiments.forEach((e,i)=>{e.num=String(i+1).padStart(2,'0')});}
+    if(changed){let numbered=0;data.experiments.forEach(e=>{if(e.kind==='challenge'||e.cycle==='CH'){e.num='';return}numbered++;e.num=String(numbered).padStart(2,'0')});}
     localStorage.setItem(KEY,'1');
     if(typeof persist==='function')persist(true);
   }
@@ -62,7 +62,16 @@
         movie.media.push({id:fileID,type:'video',label:'Mission to Income · 사이클 5 결과 영상',src:movieURL});
         if(!movie.coverId)movie.coverId=fileID;
         if(typeof persist==='function')persist(true);
-        if(typeof render==='function')render();
+        // Normalize numbering without modifying previously edited review text or media.
+  if(!localStorage.getItem('ej-challenge-unnumbered-v1')){
+    const challenge=data.experiments.find(e=>e.id==='exp-invitation-challenge');
+    const motion=data.experiments.find(e=>e.id==='exp-motion-harness');
+    if(challenge){challenge.kind='challenge';challenge.cycle='CH';challenge.num='';}
+    if(motion)motion.num='07';
+    localStorage.setItem('ej-challenge-unnumbered-v1','1');
+    if(typeof persist==='function')persist(true);
+  }
+  if(typeof render==='function')render();
       }
     }).catch(()=>{});
   }
