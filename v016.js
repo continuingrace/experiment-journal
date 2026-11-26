@@ -20,8 +20,8 @@
     ]
   };
 
-  const match06=e=>String(e?.num)==='06'||/QA SYSTEM|HARNESS/i.test(String(e?.kicker||''))||/하네스/i.test(String(e?.title||''));
-  const match07=e=>String(e?.num)==='07'||/GOVERNANCE/i.test(String(e?.kicker||''));
+  const match06=e=>e?.id==='exp-harness-system'||(e?.id!=='exp-motion-harness'&&e?.id!=='exp-invitation-challenge'&&(String(e?.num)==='06'||/QA SYSTEM/i.test(String(e?.kicker||''))));
+  const match07=e=>e?.id==='exp-governance'||/GOVERNANCE/i.test(String(e?.kicker||''));
   let first=data.experiments.find(match06)||null;
   const second=data.experiments.find(match07)||null;
 
