@@ -29,3 +29,14 @@
 
 /* v0.3.57 — a challenge is not a numbered cycle experiment */
 .nav button:has(.challenge-index){grid-template-columns:54px minmax(0,1fr)}.nav .challenge-index{font-size:12px;letter-spacing:-.015em;white-space:nowrap;font-weight:650}
+
+/* v0.3.59 — explicit cycle hierarchy in desktop navigation */
+.nav-cycle-block{display:flex;flex-direction:column;gap:5px;margin-top:13px}
+.nav-cycle-block:first-child{margin-top:2px}
+.nav-cycle-heading{padding:12px 10px 4px;font-size:12px;line-height:18px;letter-spacing:.015em;font-weight:750;color:#6b736d;border-top:1px solid var(--line);word-break:keep-all}
+.nav-cycle-block:first-child .nav-cycle-heading{border-top:0}
+.nav-cycle-block button{width:100%}
+.nav-cycle-block small{font-size:13px;line-height:19px}
+.nav-cycle-block small i{display:block;font-size:11px;font-style:normal;line-height:16px;color:#888f89;font-weight:500}
+.nav-cycle-block .challenge-index{font-size:15px;line-height:22px}
+@media(max-width:760px){.nav-cycle-heading{padding-top:13px;font-size:12px}.nav-cycle-block{margin-top:11px}}
