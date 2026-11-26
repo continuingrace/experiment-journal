@@ -42,7 +42,28 @@ function createVideoPoster(v){
 }
 function primeVideoFrames(){document.querySelectorAll('video').forEach(createVideoPoster)}
 function render(){nav();timeline();sections();editor();requestAnimationFrame(primeVideoFrames)}
-function nav(){document.getElementById('nav').innerHTML=data.experiments.map(e=>`<button type="button" class="${e.id===active?'active':''}" onclick="selectExp('${e.id}')"><small class="${e.kind==='challenge'||e.cycle==='CH'?'challenge-index':''}">${e.kind==='challenge'||e.cycle==='CH'?'챌린지':esc(e.num)}</small><span><b>${esc(e.kicker)}</b><em>${esc(e.title)}</em></span></button>`).join('')}
+function nav(){
+  const groups=[];
+  for(const e of data.experiments){
+    const cycle=e.kind==='challenge'||e.cycle==='CH'?'CH':String(e.cycle||'01');
+    let g=groups.find(x=>x.cycle===cycle);
+    if(!g){g={cycle,items:[]};groups.push(g)}
+    g.items.push(e);
+  }
+  document.getElementById('nav').innerHTML=groups.map(g=>{
+    const isChallenge=g.cycle==='CH';
+    const title=isChallenge?'챌린지':/^\\d+$/.test(g.cycle)?'사이클 '+Number(g.cycle):'별도 실험';
+    const count=!isChallenge?' · '+g.items.length+'개 실험':'';
+    const head=`<div class="nav-cycle-heading">${title}${count}</div>`;
+    const items=g.items.map((e,index)=>{
+      const challenge=e.kind==='challenge'||e.cycle==='CH';
+      const number=challenge?'CH':esc(e.num||'');
+      const round=challenge?'':`<i>${index+1}차</i>`;
+      return `<button type="button" class="${e.id===active?'active':''}" onclick="selectExp('${e.id}')"><small class="${challenge?'challenge-index':''}">${number}${round}</small><span><b>${esc(e.kicker)}</b><em>${esc(e.title)}</em></span></button>`;
+    }).join('');
+    return '<div class="nav-cycle-block">'+head+items+'</div>';
+  }).join('');
+}
 function timeline(){document.getElementById('timeline').innerHTML=data.experiments.map(e=>`<div class="step"><small>${e.kind==='challenge'||e.cycle==='CH'?'챌린지':esc(e.num)}</small><b>${esc(e.kicker)}</b><span>${esc(e.title)}</span></div>`).join('')}
 const PUBLIC_MEDIA_BASE='https://continuingrace.github.io/experiment-journal-public/';
 const src=m=>{
