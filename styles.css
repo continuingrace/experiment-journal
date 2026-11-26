@@ -40,3 +40,8 @@
 .nav-cycle-block small i{display:block;font-size:11px;font-style:normal;line-height:16px;color:#888f89;font-weight:500}
 .nav-cycle-block .challenge-index{font-size:15px;line-height:22px}
 @media(max-width:760px){.nav-cycle-heading{padding-top:13px;font-size:12px}.nav-cycle-block{margin-top:11px}}
+
+/* v0.3.68 — keep original image filenames in media management, not on the artwork */
+#sections .media:has(> img) > .cap,
+#sections figure:has(> img) > figcaption,
+#sections .cycle-gallery figure:has(img) > figcaption {display:none!important}
