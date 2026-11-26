@@ -8,13 +8,14 @@
     {id:'motion-cycle5-bgm-a',type:'video',label:'완성 영상 · BGM 버전 A (20:59)',src:root+'mission-to-income-v2_2026-11-08_20-59-11.mp4'},
     {id:'motion-cycle5-bgm-b',type:'video',label:'완성 영상 · BGM 버전 B (21:00)',src:root+'mission-to-income-v2_2026-11-08_21-00-22.mp4'}
   ];
-  const inScope=(m)=>files.some(item=>String(m.src||'').split('?')[0]===item.src||m.id===item.id)
-    ||m.id==='motion-20261108-video';
+  const isMatchingFile=(m,item)=>String(m.src||'').split('?')[0]===item.src||m.id===item.id||
+    String(m.label||'').includes(item.src.split('/').pop());
+  const inScope=(m)=>files.some(item=>isMatchingFile(m,item))||m.id==='motion-20261108-video';
   e.media=Array.isArray(e.media)?e.media:[];
   const unrelated=e.media.filter(m=>!inScope(m));
   const current=e.media.filter(inScope);
   const ordered=files.map(item=>{
-    const old=current.find(m=>m.id===item.id||String(m.src||'').split('?')[0]===item.src);
+    const old=current.find(m=>isMatchingFile(m,item));
     const keep=old?{...old,...item}:item;
     delete keep.key;
     delete keep.objectUrl;
