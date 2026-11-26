@@ -21,13 +21,13 @@
       id:'exp-motion-harness',
       num:'07',cycle:'05',kind:'cycle',
       kicker:'MOTION HARNESS',title:'모션 하네스로 영상 만들기',date:'2026-11-08',
-      summary:'사이클 5에서 모션 하네스를 만들고, 이를 활용한 약 29초 분량의 영상 「Mission to Income」을 제작해 제출했습니다.',
+      summary:'사이클 5에서 모션 하네스를 설정하고, 이를 활용해 약 29초 분량의 영상을 제작해 제출했습니다.',
       question:'직접 만든 모션 하네스로 영상 결과물까지 완성할 수 있을까?',
       context:'사이클 5의 실험 주제는 모션 하네스를 만들고, 그 하네스로 실제 영상까지 제작하는 것이었습니다.',
-      tried:'• 모션 하네스 구성\n• 하네스를 활용해 영상 제작\n• 완성한 결과물 제출',
+      tried:'• Claude Code에서 모션 하네스의 스킬과 제작 규칙 설정\n• 하네스를 활용해 영상 제작\n• AI 음악 생성 도구로 BGM 샘플을 만든 뒤 직접 들어보고, 추가하고 싶은 요소를 요청하며 수정\n• 완성한 영상 제출',
       friction:'제출 자료에 구체적인 시행착오는 아직 기록하지 않았습니다.',
       applied:'타이핑 장면과 ‘제출하기’ 버튼, 지식 자산 가치가 표시되는 화면, 허들링클럽 엔딩으로 이어지는 영상을 완성했습니다.',
-      learned:'모션 하네스를 만드는 데 그치지 않고, 실제 영상 결과물로 연결해 본 실험이었습니다.',
+      learned:'모션 하네스 설정부터 영상과 배경음악 제작까지 직접 진행했습니다. 샘플을 확인하고 피드백을 주며 결과물을 다듬는 과정이 중요했습니다.',
       next:'제작 과정에서 활용한 규칙과 수정 내용을 보완해 다음 영상에도 재사용하기',
       resources:[],
       media:[],coverId:null,
@@ -109,7 +109,7 @@
       const existing=(movie.media||[]).find(m=>m.id===fileID||m.src===movieURL);
       if(!existing){
         movie.media=Array.isArray(movie.media)?movie.media:[];
-        movie.media.push({id:fileID,type:'video',label:'Mission to Income · 사이클 5 결과 영상',src:movieURL});
+        movie.media.push({id:fileID,type:'video',label:'사이클 5 · 모션 하네스 결과 영상',src:movieURL});
         if(!movie.coverId)movie.coverId=fileID;
         if(typeof persist==='function')persist(true);
   if(typeof render==='function')render();
