@@ -57,7 +57,7 @@ function nav(){
     const head=`<div class="nav-cycle-heading">${title}${count}</div>`;
     const items=g.items.map((e,index)=>{
       const challenge=e.kind==='challenge'||e.cycle==='CH';
-      const number=challenge?'CH':esc(e.num||'');
+      const number=challenge?'—':esc(e.num||'');
       const round=challenge?'':`<i>${index+1}차</i>`;
       return `<button type="button" class="${e.id===active?'active':''}" onclick="selectExp('${e.id}')"><small class="${challenge?'challenge-index':''}">${number}${round}</small><span><b>${esc(e.kicker)}</b><em>${esc(e.title)}</em></span></button>`;
     }).join('');
