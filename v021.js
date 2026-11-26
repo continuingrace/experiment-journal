@@ -29,13 +29,10 @@
     e.coverId!=='motion-cycle5-figma-board';
   e.media=updated;
   e.coverId='motion-cycle5-figma-board';
-  const figma='https://www.figma.com/design/RSoltcenpXX4Wn1jn4TwdS/?node-id=872-656';
   e.resources=Array.isArray(e.resources)?e.resources:[];
-  let resourceAdded=false;
-  if(!e.resources.some(r=>r.url===figma)){
-    e.resources.push({label:'Figma 모션 하네스 구성 시안',url:figma});resourceAdded=true;
-  }
-  if(changed||resourceAdded){
+  const originalCount=e.resources.length;
+  e.resources=e.resources.filter(r=>!String(r.url||'').includes('figma.com/design/RSoltcenpXX4Wn1jn4TwdS'));
+    if(changed||originalCount!==e.resources.length){
     if(typeof persist==='function')persist(true);
     if(typeof render==='function')render();
   }
