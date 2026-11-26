@@ -42,11 +42,25 @@
       }
     }
     data.overview=data.overview||{};
-    data.overview.cycleTopics={...(data.overview.cycleTopics||{}),'CH':'초대장 만들기','05':'모션 하네스와 영상 만들기'};
+    data.overview.cycleTopics={...(data.overview.cycleTopics||{}),'CH':'초대장 만들기','05':"클로드코드로 모션 디자인 시스템화해서 일관된 모션 만들기"};
     if(changed){let numbered=0;data.experiments.forEach(e=>{if(e.kind==='challenge'||e.cycle==='CH'){e.num='';return}numbered++;e.num=String(numbered).padStart(2,'0')});}
     localStorage.setItem(KEY,'1');
     if(typeof persist==='function')persist(true);
   }
+
+  // Apply the confirmed official cycle topics to existing browser-saved journals.
+  // Do not overwrite unrelated user-authored review fields.
+  data.overview=data.overview||{};
+  data.overview.cycleTopics=data.overview.cycleTopics||{};
+  const officialTitles={"04":"기획부터 디자인까지 쭉! AI 디자인 하네스 만들기","05":"클로드코드로 모션 디자인 시스템화해서 일관된 모션 만들기"};
+  let topicsChanged=false;
+  for(const [cycle,title] of Object.entries(officialTitles)){
+    if(data.overview.cycleTopics[cycle]!==title){
+      data.overview.cycleTopics[cycle]=title;
+      topicsChanged=true;
+    }
+  }
+  if(topicsChanged&&typeof persist==='function')persist(true);
 
   // An unnumbered challenge stays between experiments 06 and 07 on every load.
   // Never overwrite the user's text or attached media.
