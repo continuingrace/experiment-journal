@@ -45,3 +45,30 @@
 #sections .media:has(> img) > .cap,
 #sections figure:has(> img) > figcaption,
 #sections .cycle-gallery figure:has(img) > figcaption {display:none!important}
+
+/* v0.3.69 — Growth review: accessible type scale and responsive timeline */
+.ej-growth-section{padding-top:clamp(58px,7vw,104px)!important;padding-bottom:clamp(58px,7vw,92px)!important}
+.ej-growth-section>.eyebrow{font-size:14px!important;font-weight:700!important;letter-spacing:.045em!important;line-height:1.6!important;color:#67736a!important}
+.ej-growth-section>h2,
+#overviewChangedLead{max-width:810px!important;font-family:Pretendard,"Apple SD Gothic Neo",sans-serif!important;font-size:clamp(30px,3.05vw,44px)!important;font-weight:700!important;letter-spacing:-.023em!important;line-height:1.46!important;word-break:keep-all!important;text-wrap:pretty!important;margin:22px 0 34px!important}
+.ej-growth-section>p:not(#overviewChangedLead),#overviewChangedBody{max-width:690px!important;font-family:Pretendard,"Apple SD Gothic Neo",sans-serif!important;font-size:clamp(16px,1.35vw,19px)!important;font-weight:400!important;letter-spacing:0!important;line-height:1.85!important;color:#5e665e!important;margin:26px 0 0!important;word-break:keep-all!important;text-wrap:pretty!important}
+.ej-growth-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;max-width:880px;border-top:1px solid #b8bdb5;border-bottom:1px solid #d4d6ce}
+.ej-growth-step{display:flex;gap:14px;align-items:flex-start;min-width:0;padding:20px 22px 20px 0}
+.ej-growth-step+.ej-growth-step{border-left:1px solid #d4d6ce;padding-left:22px}
+.ej-growth-step span{flex:0 0 auto;font-size:12px;line-height:1.6;font-weight:700;color:#7d8980;letter-spacing:.04em}
+.ej-growth-step strong{font-size:clamp(14px,1.17vw,17px);font-weight:650;line-height:1.6;letter-spacing:-.012em;word-break:keep-all;color:#26312a}
+.ej-principle-section{padding-top:clamp(48px,5.5vw,80px)!important;padding-bottom:clamp(60px,7vw,108px)!important}
+.ej-principle-section>.eyebrow{font-size:14px!important;line-height:1.6!important;letter-spacing:.04em!important;font-weight:700!important}
+.ej-principle-section>h2,#overviewPrincipleText{max-width:790px!important;font-family:Pretendard,"Apple SD Gothic Neo",sans-serif!important;font-size:clamp(28px,2.85vw,42px)!important;line-height:1.5!important;letter-spacing:-.025em!important;font-weight:700!important;word-break:keep-all!important;text-wrap:pretty!important;margin-top:24px!important}
+@media(max-width:760px){
+ .ej-growth-section{padding-top:58px!important;padding-bottom:56px!important}
+ .ej-growth-section>h2,#overviewChangedLead{font-size:clamp(27px,7vw,34px)!important;line-height:1.48!important;margin:18px 0 30px!important}
+ .ej-growth-section>p:not(#overviewChangedLead),#overviewChangedBody{font-size:16px!important;line-height:1.85!important;margin-top:24px!important}
+ .ej-growth-steps{grid-template-columns:minmax(0,1fr);max-width:100%}
+ .ej-growth-step{padding:12px 0!important;gap:18px}
+ .ej-growth-step+.ej-growth-step{border-left:0;border-top:1px solid #d4d6ce}
+ .ej-growth-step strong{font-size:16px!important;line-height:1.65!important}
+ .ej-growth-step span{width:23px;font-size:12px}
+ .ej-principle-section{padding-top:52px!important;padding-bottom:76px!important}
+ .ej-principle-section>h2,#overviewPrincipleText{font-size:clamp(27px,7vw,34px)!important;line-height:1.56!important;margin-top:18px!important}
+}
