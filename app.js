@@ -42,8 +42,8 @@ function createVideoPoster(v){
 }
 function primeVideoFrames(){document.querySelectorAll('video').forEach(createVideoPoster)}
 function render(){nav();timeline();sections();editor();requestAnimationFrame(primeVideoFrames)}
-function nav(){document.getElementById('nav').innerHTML=data.experiments.map(e=>`<button type="button" class="${e.id===active?'active':''}" onclick="selectExp('${e.id}')"><small>${e.num}</small><span><b>${esc(e.kicker)}</b><em>${esc(e.title)}</em></span></button>`).join('')}
-function timeline(){document.getElementById('timeline').innerHTML=data.experiments.map(e=>`<div class="step"><small>${e.num}</small><b>${esc(e.kicker)}</b><span>${esc(e.title)}</span></div>`).join('')}
+function nav(){document.getElementById('nav').innerHTML=data.experiments.map(e=>`<button type="button" class="${e.id===active?'active':''}" onclick="selectExp('${e.id}')"><small>${e.kind==='challenge'||e.cycle==='CH'?'챌린지':esc(e.num)}</small><span><b>${esc(e.kicker)}</b><em>${esc(e.title)}</em></span></button>`).join('')}
+function timeline(){document.getElementById('timeline').innerHTML=data.experiments.map(e=>`<div class="step"><small>${e.kind==='challenge'||e.cycle==='CH'?'챌린지':esc(e.num)}</small><b>${esc(e.kicker)}</b><span>${esc(e.title)}</span></div>`).join('')}
 const PUBLIC_MEDIA_BASE='https://continuingrace.github.io/experiment-journal-public/';
 const src=m=>{
   const stable=m?.src||'';
