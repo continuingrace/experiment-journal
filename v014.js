@@ -26,9 +26,7 @@
     inserted=true;
   }
 
-  data.experiments.forEach((e,i)=>{
-    e.num=String(i+1).padStart(2,'0');
-  });
+  data.experiments.forEach((e,i)=>{if(e.num==null)e.num=String(i+1).padStart(2,'0')});
 
   if(inserted||data.activeId!==active){
     data.activeId=active;
@@ -293,7 +291,7 @@
   sections=()=>{originalSections();renderCycleGalleries()};
   const originalEditor=editor;
   editor=(target='editor',mgr='manager')=>{originalEditor(target,mgr);if(target==='editor'){const upload=document.querySelector('.upload');if(upload&&!upload.querySelector('.cycle-upload-note')){const note=document.createElement('small');note.className='cycle-upload-note';note.textContent='사이클마다 각 실험의 대표 이미지를 1개씩 추가하면 아래에 이미지 2개가 함께 표시됩니다.';upload.insertBefore(note,upload.firstChild)}}};
-  data.experiments.forEach((e,i)=>e.cycle=String(Math.floor(i/2)+1).padStart(2,'0'));
+  data.experiments.forEach((e,i)=>{if(!e.cycle)e.cycle=String(Math.floor(i/2)+1).padStart(2,'0')});
   sections();
   applyOverview();
 })();
