@@ -48,6 +48,19 @@
     if(typeof persist==='function')persist(true);
   }
 
+  // An unnumbered challenge stays between experiments 06 and 07 on every load.
+  // Never overwrite the user's text or attached media.
+  let normalized=false;
+  const challenge=data.experiments.find(e=>e.id==='exp-invitation-challenge');
+  const motionRecord=data.experiments.find(e=>e.id==='exp-motion-harness');
+  if(challenge&&(challenge.kind!=='challenge'||challenge.cycle!=='CH'||challenge.num!=='')){
+    challenge.kind='challenge';challenge.cycle='CH';challenge.num='';normalized=true;
+  }
+  if(motionRecord&&(motionRecord.num!=='07'||motionRecord.cycle!=='05')){
+    motionRecord.num='07';motionRecord.cycle='05';normalized=true;
+  }
+  if(normalized&&typeof persist==='function')persist(true);
+
   // The binary is uploaded separately to the public repository.
   // Do not display a broken video before the public file is actually available.
   const movie=data.experiments.find(e=>e.id==='exp-motion-harness');
@@ -62,15 +75,6 @@
         movie.media.push({id:fileID,type:'video',label:'Mission to Income · 사이클 5 결과 영상',src:movieURL});
         if(!movie.coverId)movie.coverId=fileID;
         if(typeof persist==='function')persist(true);
-        // Normalize numbering without modifying previously edited review text or media.
-  if(!localStorage.getItem('ej-challenge-unnumbered-v1')){
-    const challenge=data.experiments.find(e=>e.id==='exp-invitation-challenge');
-    const motion=data.experiments.find(e=>e.id==='exp-motion-harness');
-    if(challenge){challenge.kind='challenge';challenge.cycle='CH';challenge.num='';}
-    if(motion)motion.num='07';
-    localStorage.setItem('ej-challenge-unnumbered-v1','1');
-    if(typeof persist==='function')persist(true);
-  }
   if(typeof render==='function')render();
       }
     }).catch(()=>{});
