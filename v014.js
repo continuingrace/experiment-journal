@@ -82,7 +82,7 @@
   if(tab){const previous=tab.onclick;tab.onclick=()=>{if(previous)previous();setTimeout(mountEditor,0)}}
   const css=document.createElement('style');css.textContent='.cycle-topic-help{font-size:12px;color:#71808b;line-height:1.5;margin:-4px 0 12px}.cycle-group-heading strong{max-width:80%;line-height:1.45}';document.head.appendChild(css);
   ensure();setTimeout(applyTopics,0);
-  const root=document.getElementById('sections');if(root)new MutationObserver(()=>setTimeout(applyTopics,0)).observe(root,{childList:true,subtree:true});
+  // Cycle 4+ headings are managed by the unified cycle renderer in v016.js.
 })();
 
 (()=>{
@@ -319,15 +319,15 @@
     for(let i=0;i<items.length;i+=2){
       const pair=items.slice(i,i+2);const first=data.experiments.find(e=>e.id===pair[0].id);const cycle=first?.cycle||String(Math.floor(i/2)+1).padStart(2,'0');
       const group=document.createElement('div');group.className='cycle-group';group.dataset.cycle=cycle;
-      const heading=document.createElement('div');heading.className='cycle-group-heading';heading.innerHTML='<strong>[사이클 '+Number(cycle)+']</strong>';group.appendChild(heading);
+      const heading=document.createElement('div');heading.className='cycle-group-heading';heading.innerHTML='<strong>'+(cycle==='CH'?'[챌린지]':'[사이클 '+Number(cycle)+']')+'</strong>';group.appendChild(heading);
       root.insertBefore(group,pair[0]);pair.forEach(el=>group.appendChild(el));
     }
   }
   const previousSections=sections;
-  sections=()=>{previousSections();setTimeout(groupCycles,0)};
-  groupCycles();
+  sections=()=>{previousSections()};
+  // No legacy pair-by-two regrouping; v016.js groups by actual cycle.
   const root=document.getElementById('sections');
-  if(root){root.addEventListener('click',event=>{const media=event.target.closest('img');if(media&&media.closest('.cycle-group'))openMedia(media)});new MutationObserver(()=>setTimeout(groupCycles,0)).observe(root,{childList:true})}
+  if(root){root.addEventListener('click',event=>{const media=event.target.closest('img');if(media&&media.closest('.cycle-group'))openMedia(media)});/* Legacy grouping observer removed: it conflicted with v016.js grouping. */}
   const publish=document.getElementById('publishBtn');
   if(publish)publish.onclick=()=>window.open(PUBLIC_RELEASE_URL,'_blank','noopener');
 })();
@@ -530,17 +530,17 @@
   }
   const css=document.createElement('style');css.textContent='.overview-copy{font-family:var(--overview-small-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-small-letter-spacing,.01em)!important;line-height:var(--overview-small-line-height,1.6)!important;font-size:var(--overview-small-font-size,16px)!important;font-weight:var(--overview-small-font-weight,400)!important}.overview-big{font-family:var(--overview-big-font-family,Pretendard,sans-serif)!important;letter-spacing:var(--overview-big-letter-spacing,.01em)!important;line-height:var(--overview-big-line-height,1.35)!important;font-size:var(--overview-big-font-size,56px)!important;font-weight:var(--overview-big-font-weight,500)!important}#overview>.eyebrow{font-size:16px!important;font-weight:600!important;letter-spacing:.04em!important;text-transform:none!important}.cycle-group-heading strong{font-size:20px!important;line-height:1.25;font-weight:600!important;letter-spacing:.04em}.cycle-group .section .eyebrow{font-size:12px!important}';document.head.appendChild(css);
   setOverviewModeV3();applyStyles();
-  const sectionsRoot=document.getElementById('sections');if(sectionsRoot)new MutationObserver(()=>relabelCycles()).observe(sectionsRoot,{childList:true,subtree:true});
+  // Heading labels update on render only; avoid recursive mutation observers.
 })();
 
 
 (()=>{
   const defaults={'01':'스킬 공유: 내 데이터로 나만의 요약 워크 플로우 만들기','02':'일관성 있는 아이콘 세트 만들기 · 나만의 캐릭터 에셋 만들고 연출별 3컷 만들기','03':'유용한 MCP 소개하기'};
   const topics=()=>{data.overview=data.overview||{};data.overview.cycleTopics=Object.assign({},defaults,data.overview.cycleTopics||{});if(['스킬 공유하기 · 내 데이터로 나만의 요약 워크플로우 만들기','스킬 공유: 내 데이터로 나만의 요약 워크플로우 만들기'].includes(data.overview.cycleTopics['01']))data.overview.cycleTopics['01']=defaults['01'];return data.overview.cycleTopics};
-  const apply=()=>{const values=topics();document.querySelectorAll('#sections .cycle-group').forEach(group=>{const cycle=group.dataset.cycle||'01';const heading=group.querySelector('.cycle-group-heading strong');const next='[사이클 '+Number(cycle)+']'+(values[cycle]?' '+values[cycle]:'');if(heading&&heading.textContent!==next)heading.textContent=next})};
+  const apply=()=>{const values=topics();document.querySelectorAll('#sections .cycle-group').forEach(group=>{const cycle=group.dataset.cycle||'01';const heading=group.querySelector('.cycle-group-heading strong');const next=(cycle==='CH'?'[챌린지]':'[사이클 '+Number(cycle)+']')+(values[cycle]?' '+values[cycle]:'');if(heading&&heading.textContent!==next)heading.textContent=next})};
   const mount=()=>{const el=document.getElementById('overviewEditor');if(!el||document.getElementById('cycleTopicEditor'))return;const values=topics();const block=document.createElement('div');block.id='cycleTopicEditor';block.innerHTML='<div class="overview-style-title">사이클 주제</div><p class="cycle-topic-help">각 사이클의 두 실험을 한 문장으로 묶어 적어 주세요.</p>'+['01','02','03'].map(c=>'<div class="field"><label>사이클 '+c+' 주제</label><input data-cycle-topic="'+c+'" value="'+esc(values[c]||'')+'"></div>').join('');const save=el.querySelector('#overviewSaveV3');if(save)el.insertAdjacentElement('beforebegin',block);else el.appendChild(block);block.querySelectorAll('[data-cycle-topic]').forEach(input=>input.oninput=()=>{topics()[input.dataset.cycleTopic]=input.value;apply()})};
   const tab=document.getElementById('overviewTab');if(tab){const previous=tab.onclick;tab.onclick=()=>{if(previous)previous();setTimeout(mount,0)}}
-  const style=document.createElement('style');style.textContent='.cycle-topic-help{font-size:12px;color:#71808b;line-height:1.5;margin:-4px 0 12px}.cycle-group-heading strong{max-width:80%;line-height:1.45}';document.head.appendChild(style);topics();setTimeout(apply,0);const root=document.getElementById('sections');if(root)new MutationObserver(()=>setTimeout(apply,0)).observe(root,{childList:true,subtree:true});
+  const style=document.createElement('style');style.textContent='.cycle-topic-help{font-size:12px;color:#71808b;line-height:1.5;margin:-4px 0 12px}.cycle-group-heading strong{max-width:80%;line-height:1.45}';document.head.appendChild(style);topics();setTimeout(apply,0); // Canonical heading updates are handled by v016.js.
 })();
 
 
